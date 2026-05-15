@@ -15,6 +15,7 @@ pub struct Character {
     pub confidence_points: i32,
     pub description: Option<String>,
     pub is_active: bool,
+    pub is_official: bool,
     pub created_at: String,
     pub updated_at: String,
 }

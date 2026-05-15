@@ -30,6 +30,7 @@ interface Character {
   character_type: 'magus' | 'companion' | 'grog';
   house?: string;
   warp_score: number;
+  is_official: boolean;
 }
 
 interface Props {
@@ -329,52 +330,63 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
   // 2. List View (All Alliances)
   if (!selectedCov && !forceTab) {
     return (
-      <div className="flex-1 h-full overflow-y-auto custom-scrollbar p-12 bg-parchment-light relative">
+      <div className="flex-1 h-full overflow-y-auto custom-scrollbar bg-parchment-light relative">
         {renderWizard()}
         
-        <header className="mb-12">
-          <div className="flex justify-between items-start mb-6">
+        <header className="sticky top-0 z-50 p-6 pointer-events-none mb-4">
+          <div className="bg-bg-sidebar/90 backdrop-blur-md p-6 rounded-2xl border border-accent/20 shadow-xl inline-block pointer-events-auto">
             <div>
-              <h1 className="text-6xl font-header text-text-main mb-4">Les Alliances de l'Ordre</h1>
-              <p className="text-text-muted font-body italic text-lg border-l-2 border-accent/30 pl-6">
-                "Chaque sanctuaire est une forteresse contre l'oubli et le déclin de la magie."
+              <h2 className="text-3xl font-header text-text-main tracking-tight flex items-center gap-4">
+                <Landmark size={28} className="text-primary" />
+                {t('covenant.list.title')}
+              </h2>
+              <p className="text-[0.6rem] font-label text-accent uppercase tracking-[0.3em] font-bold opacity-70">
+                {t('covenant.list.subtitle')}
               </p>
-            </div>
-            {/* Reduced Creation Button Above */}
-            <button 
-              onClick={() => setShowWizard(true)}
-              className="flex items-center gap-3 bg-primary text-white px-6 py-3 rounded-full font-label uppercase text-[10px] font-bold tracking-[0.2em] hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 hover:scale-105 active:scale-95"
-            >
-              <Plus size={18} /> Nouvelle Alliance
-            </button>
-          </div>
-
-          {/* Search & Filter Bar - Unified One-Line */}
-          <div className="flex items-center gap-4 bg-white p-2 pl-4 rounded-full border border-outline-variant shadow-sm max-w-5xl">
-            <Search size={18} className="text-text-muted opacity-60" />
-            <input 
-              type="text" 
-              placeholder="Filtrer par nom..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 bg-transparent border-none outline-none font-body text-sm"
-            />
-            <div className="h-8 w-px bg-outline-variant/30" />
-            <div className="flex items-center gap-2 px-2">
-              <Filter size={16} className="text-text-muted opacity-60" />
-              <select 
-                value={selectedTribunal}
-                onChange={(e) => setSelectedTribunal(e.target.value)}
-                className="bg-transparent border-none outline-none font-label uppercase text-[10px] tracking-widest cursor-pointer pr-4 font-bold text-text-muted hover:text-primary transition-colors"
-              >
-                <option value="all">Tous les Tribunaux</option>
-                {TRIBUNALS.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
-              </select>
             </div>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {/* Action Bar (Below Header) */}
+        <div className="px-10 mb-10">
+          <button 
+            onClick={() => setShowWizard(true)}
+            className="btn-hermetic !flex-row !gap-3 !py-3 !px-8"
+          >
+            <Plus size={18} />
+            <span>{t('covenant.action.found')}</span>
+          </button>
+        </div>
+
+        {/* Search & Filter Bar - Positioned below header */}
+        <div className="px-10 pb-10">
+          {/* Search & Filter Bar - Positioned below header */}
+          <div className="max-w-6xl mb-12">
+            <div className="flex items-center gap-4 bg-white p-2 pl-4 rounded-full border border-outline-variant shadow-sm w-full">
+              <Search size={18} className="text-text-muted opacity-60" />
+              <input 
+                type="text" 
+                placeholder={t('covenant.list.filter')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 bg-transparent border-none outline-none font-body text-sm"
+              />
+              <div className="h-8 w-px bg-outline-variant/30" />
+              <div className="flex items-center gap-2 px-2">
+                <Filter size={16} className="text-text-muted opacity-60" />
+                <select 
+                  value={selectedTribunal}
+                  onChange={(e) => setSelectedTribunal(e.target.value)}
+                  className="bg-transparent border-none outline-none font-label uppercase text-[10px] tracking-widest cursor-pointer pr-4 font-bold text-text-muted hover:text-primary transition-colors"
+                >
+                  <option value="all">{t('covenant.list.tribunals')}</option>
+                  {TRIBUNALS.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {filteredCovenants.map((cov) => (
             <div 
               key={cov.id}
@@ -447,63 +459,112 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
           ))}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // 3. Detail View (Selected Alliance)
   return (
-    <div className="flex-1 h-full overflow-y-auto custom-scrollbar p-10 bg-parchment-light">
+    <div className="flex-1 h-full overflow-y-auto custom-scrollbar bg-parchment-light">
       {/* Back Button */}
       {!forceTab && (
-        <button 
-          onClick={() => setSelectedCov(null)}
-          className="mb-8 flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-label text-xs uppercase tracking-widest"
-        >
-          <ChevronLeft size={16} /> Retour aux Alliances
-        </button>
+        <div className="px-10 pt-8">
+          <button 
+            onClick={() => setSelectedCov(null)}
+            className="flex items-center gap-2 text-text-muted hover:text-primary transition-colors font-label text-xs uppercase tracking-widest"
+          >
+            <ChevronLeft size={16} /> Retour aux Alliances
+          </button>
+        </div>
       )}
 
       {/* Top Banner: Covenant Identity & Season */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 border-b border-outline-variant pb-10">
-        <div>
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-[10px] font-label uppercase tracking-[0.3em] bg-accent/10 text-accent px-4 py-1 rounded-full border border-accent/20">
-              Tribunal du {TRIBUNALS.find(t => t.id === selectedCov?.tribunal)?.label || selectedCov?.tribunal}
-            </span>
-            <span className="text-[10px] font-label uppercase tracking-[0.3em] bg-primary/10 text-primary px-4 py-1 rounded-full border border-primary/20">
-              Aura {selectedCov?.aura_type === 'magic' ? 'Magique' : 
-                    selectedCov?.aura_type === 'faerie' ? 'Féérique' :
-                    selectedCov?.aura_type === 'divine' ? 'Divine' :
-                    selectedCov?.aura_type === 'infernal' ? 'Infernale' : 'Neutre'} {selectedCov?.aura_level}
-            </span>
+      <header className="sticky top-0 z-50 p-6 pointer-events-none mb-4">
+        <div className="bg-bg-sidebar/90 backdrop-blur-md p-6 rounded-2xl border border-accent/20 shadow-xl flex justify-between items-end pointer-events-auto w-full">
+          <div>
+            {!forceTab && (
+              <div className="flex items-center gap-4 mb-3">
+                <span className="text-[8px] font-label uppercase tracking-[0.3em] bg-accent/10 text-accent px-3 py-0.5 rounded-full border border-accent/20">
+                  {TRIBUNALS.find(t => t.id === selectedCov?.tribunal)?.label || selectedCov?.tribunal}
+                </span>
+                <span className="text-[8px] font-label uppercase tracking-[0.3em] bg-primary/10 text-primary px-3 py-0.5 rounded-full border border-primary/20">
+                  Aura {selectedCov?.aura_type} {selectedCov?.aura_level}
+                </span>
+              </div>
+            )}
+            <h1 className="text-4xl font-header text-text-main tracking-tight flex items-center gap-4">
+              {forceTab === 'magi' ? <Zap className="text-purple-400" size={32} /> :
+               forceTab === 'companions' ? <Shield className="text-blue-400" size={32} /> :
+               forceTab === 'grogs' ? <Skull className="text-slate-400" size={32} /> :
+               selectedCov?.domus_magna ? <Crown className="text-accent" size={32} /> : 
+               <Landmark className="text-primary" size={32} />}
+              {forceTab === 'magi' ? t('dashboard.tile.magi.title') :
+               forceTab === 'companions' ? t('dashboard.tile.companions.title') :
+               forceTab === 'grogs' ? t('dashboard.tile.grogs.title') :
+               selectedCov?.name}
+            </h1>
+            {forceTab && (
+              <p className="text-[0.6rem] font-label text-accent uppercase tracking-[0.3em] font-bold opacity-70 mt-2">
+                Archives de l'Ordre d'Hermès — An {season?.year}
+              </p>
+            )}
           </div>
-          <h1 className="text-7xl font-header text-text-main tracking-tight">{selectedCov?.name}</h1>
-        </div>
 
-        <div className="flex items-center gap-6 bg-bg-sidebar/40 backdrop-blur-sm p-6 rounded-3xl border border-outline-variant shadow-sm">
-          <Calendar className="text-primary" size={32} />
-          <div className="pr-6 border-r border-outline-variant">
-            <p className="text-[10px] font-label uppercase text-text-muted mb-1">Saison Actuelle</p>
-            <p className="text-2xl font-header text-text-main capitalize">
-              {season?.quarter === 'spring' ? 'Printemps' :
-               season?.quarter === 'summer' ? 'Été' :
-               season?.quarter === 'autumn' ? 'Automne' :
-               season?.quarter === 'winter' ? 'Hiver' : season?.quarter} {season?.year}
-            </p>
+          <div className="flex items-center gap-6 border-l border-outline-variant/20 pl-8 ml-8">
+            <Calendar className="text-primary opacity-60" size={24} />
+            <div className="pr-6">
+              <p className="text-[8px] font-label uppercase text-text-muted mb-0.5">{t('covenant.detail.season_label')}</p>
+              <p className="text-xl font-header text-text-main capitalize">
+                {season?.quarter === 'spring' ? t('season.spring') :
+                season?.quarter === 'summer' ? t('season.summer') :
+                season?.quarter === 'autumn' ? t('season.autumn') :
+                season?.quarter === 'winter' ? t('season.winter') : season?.quarter} {season?.year}
+              </p>
+            </div>
           </div>
-          <button 
-            onClick={handleAdvanceSeason}
-            className="group flex flex-col items-center gap-1 hover:text-primary transition-colors pl-2"
-          >
-            <TrendingUp size={24} className="group-hover:translate-y-[-2px] transition-transform" />
-            <span className="text-[9px] font-label uppercase font-bold">Avancer</span>
-          </button>
         </div>
+      </header>
+
+      {/* Action Bar (Below Header) */}
+      <div className="px-10 mb-10 flex items-center gap-6">
+        <button 
+          onClick={() => {
+            const type = forceTab === 'magi' ? 'magus' : forceTab === 'companions' ? 'companion' : 'grog';
+            const label = forceTab === 'magi' ? "du Mage" : forceTab === 'companions' ? "du Custos" : "du Grog";
+            const name = prompt(`Nom ${label} ?`);
+            if (name) {
+              invoke('create_character', { 
+                name, 
+                characterType: type, 
+                covenantId: selectedCov?.id 
+              }).then(() => handleSelectCovenant(selectedCov!));
+            }
+          }}
+          className="btn-hermetic !flex-row !gap-3 !py-3"
+        >
+          <Skull size={20} />
+          <span>
+            {forceTab === 'magi' ? t('character.action.create_magus') :
+             forceTab === 'companions' ? t('character.action.create_companion') :
+             forceTab === 'grogs' ? t('character.action.create_grog') :
+             "Recruter"}
+          </span>
+        </button>
+
+        <button 
+          onClick={handleAdvanceSeason}
+          className="btn-hermetic !flex-row !min-w-0 !px-6 !py-3 !gap-2 !rounded-lg"
+        >
+          <TrendingUp size={16} />
+          <span className="text-[10px] font-bold">{t('covenant.detail.advance')}</span>
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="px-10 pb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Left Column: Resources & Stats */}
-        <div className="space-y-10">
+        {!forceTab && (
+          <div className="space-y-10">
           <div className="bg-white p-8 rounded-3xl border border-outline-variant shadow-sm">
              <div className="flex items-center justify-between mb-8">
                <h3 className="font-header text-xl flex items-center gap-3">
@@ -550,25 +611,10 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
              </div>
           </div>
         </div>
-
+      )}
+        
         {/* Right Column: Character Roster */}
-        <div className="lg:col-span-2 space-y-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-header flex items-center gap-4">
-              {forceTab === 'magi' ? <Zap className="text-purple-400" size={28} /> :
-               forceTab === 'companions' ? <Shield className="text-blue-400" size={28} /> :
-               forceTab === 'grogs' ? <Skull className="text-slate-400" size={28} /> :
-               <Users className="text-primary" size={28} />}
-              {forceTab === 'magi' ? 'Membres de la Maison' :
-               forceTab === 'companions' ? 'Custodes & Alliés' :
-               forceTab === 'grogs' ? 'Serviteurs & Milice' :
-               "Conseil de l'Alliance"}
-            </h2>
-            <button className="flex items-center gap-2 bg-text-main text-white px-6 py-2 rounded-full text-xs font-label uppercase tracking-widest hover:bg-primary transition-colors">
-              <Plus size={14} /> Recruter
-            </button>
-          </div>
-
+        <div className={`${forceTab ? 'lg:col-span-3' : 'lg:col-span-2'} space-y-8`}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {characters
               .filter(char => {
@@ -584,7 +630,14 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
                       {getTypeIcon(char.character_type)}
                     </div>
                     <div>
-                      <h4 className="text-xl font-header group-hover:text-primary transition-colors">{char.name}</h4>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-xl font-header group-hover:text-primary transition-colors">{char.name}</h4>
+                        {char.is_official && (
+                          <span className="text-[7px] font-label uppercase tracking-[0.1em] bg-accent/10 text-accent px-1.5 py-0.5 rounded border border-accent/20 font-bold">
+                            {t('character.label.official')}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-[10px] font-label uppercase tracking-widest text-text-muted">{char.house || char.character_type}</p>
                     </div>
                   </div>
@@ -610,7 +663,8 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default CovenantDashboard;

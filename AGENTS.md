@@ -82,6 +82,7 @@ The following skills are pre-installed for this project (`.agent/skills/`):
 | `chunking-strategy` | Indexing lore documents into ChromaDB |
 | `rust-async-patterns` | Writing Tauri backend commands, SQLite integration |
 | `systematic-debugging` | Investigating any bug — read this FIRST before fixing |
+| `markdown-translator` | Specialized English to French translation for Ars Magica lore |
 
 ## ADR Location
 

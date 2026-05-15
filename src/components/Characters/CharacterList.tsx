@@ -8,6 +8,10 @@ interface Character {
   character_type: 'magus' | 'companion' | 'grog';
   house?: string;
   warp_score: number;
+  birth_year?: number;
+  death_year?: number | null;
+  source_book?: string | null;
+  page_reference?: string | null;
 }
 
 const CharacterList: React.FC = () => {
@@ -59,14 +63,25 @@ const CharacterList: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {characters.map((char) => (
               <div key={char.id} className="codex-card group cursor-pointer">
-                <div className="flex items-center gap-4 mb-4">
-                  <div style={{ padding: '12px', background: 'rgba(255,255,255,0.05)', borderRadius: '16px' }}>
-                    {getTypeIcon(char.character_type)}
+                <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-slate-800/50">
+                  <div className="flex items-center gap-4">
+                    <div style={{ padding: '12px', background: 'rgba(255,255,255,0.05)', borderRadius: '16px' }}>
+                      {getTypeIcon(char.character_type)}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg group-hover:text-blue-400 transition-colors">{char.name}</h3>
+                      <p className="text-xs uppercase tracking-widest text-slate-500 mt-0.5">
+                        {char.character_type} {char.birth_year ? `• ${char.birth_year} - ${char.death_year || 'Présent'}` : ''}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-lg group-hover:text-blue-400 transition-colors">{char.name}</h3>
-                    <p className="text-xs uppercase tracking-widest text-slate-500">{char.character_type}</p>
-                  </div>
+                  {char.source_book && (
+                    <div className="text-right">
+                      <span className="text-[10px] bg-slate-800/50 px-2 py-1 rounded text-slate-400 border border-slate-700/50 block">
+                        {char.source_book} {char.page_reference ? `(${char.page_reference})` : ''}
+                      </span>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="flex gap-4 mt-6 pt-4 border-t border-slate-800">

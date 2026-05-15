@@ -9,6 +9,8 @@ This directory contains the documented architectural decisions for the ArsFabula
 | [0001](0001-sqlite-chromadb-storage.md) | SQLite and ChromaDB Storage Strategy | Accepted | 2026-05-15 |
 | [0003](0003-local-ai-lm-studio.md) | Local AI Inference using LM Studio | Accepted | 2026-05-15 |
 | [0004](0004-heterogeneous-data-ingestion.md) | Heterogeneous Data Ingestion Strategy | Accepted | 2026-05-15 |
+| [0005](0005-hermetic-magi-census-ingestion.md) | Hermetic Magi Census Ingestion and Character Metadata Expansion | Accepted | 2026-05-15 |
+| [0006](0006-covenant-visual-assets-architecture.md) | Covenant Visual Assets Architecture and Storage Strategy | Accepted | 2026-05-16 |
 
 ## Guidelines
 

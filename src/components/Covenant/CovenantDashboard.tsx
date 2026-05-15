@@ -21,6 +21,7 @@ interface Covenant {
   vis_sources: string | null;
   laboratories: string | null;
   library: string | null;
+  visual_path?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -50,6 +51,13 @@ interface Character {
   description?: string;
   is_active: boolean;
   is_official: boolean;
+  death_year?: number | null;
+  favored_arts?: string | null;
+  familiar_link?: string | null;
+  apprentice_registry?: string | null;
+  biographical_notice?: string | null;
+  source_book?: string | null;
+  page_reference?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -329,47 +337,71 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
             <div 
               key={cov.id}
               onClick={() => handleSelectCovenant(cov)}
-              className="bg-surface p-10 rounded-[2rem] border border-outline-variant/50 shadow-sm hover:shadow-2xl hover:scale-[1.01] transition-all cursor-pointer group relative overflow-hidden"
+              className="bg-surface rounded-[2rem] border border-outline-variant/50 shadow-sm hover:shadow-2xl hover:scale-[1.01] transition-all cursor-pointer group relative overflow-hidden flex flex-col"
             >
-              <div className="flex justify-between items-center mb-10">
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-primary-container/10 p-4 rounded-2xl">
-                      <span className="material-symbols-outlined text-primary text-2xl">{cov.domus_magna ? 'workspace_premium' : 'castle'}</span>
-                    </div>
+              {cov.visual_path ? (
+                <div className="h-48 w-full relative overflow-hidden bg-surface-container">
+                  <img src={cov.visual_path} alt={cov.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
+                  <div className="absolute top-4 left-4 flex items-center gap-2">
                     {cov.is_official && (
-                      <div className="flex items-center gap-1.5 bg-secondary/10 text-secondary px-3 py-1 rounded-full border border-secondary/20">
+                      <div className="bg-surface/80 backdrop-blur-md text-secondary px-3 py-1 rounded-full border border-secondary/20 flex items-center gap-1 shadow-md">
                         <span className="material-symbols-outlined text-xs">verified</span>
                         <span className="font-label-sm !text-[9px]">Officiel</span>
                       </div>
                     )}
                   </div>
+                  <div className="absolute top-4 right-4">
+                    <span className="font-label-sm !text-[10px] bg-surface/80 backdrop-blur-md px-3 py-1 rounded-full border border-outline-variant/30 shadow-md text-on-surface">
+                      {TRIBUNALS.find(t => t.id === cov.tribunal)?.label || cov.tribunal}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex flex-col items-end gap-2">
-                  <span className="font-label-sm !text-[10px] bg-surface-container px-3 py-1 rounded-full">
-                    {TRIBUNALS.find(t => t.id === cov.tribunal)?.label || cov.tribunal}
-                  </span>
+              ) : (
+                <div className="p-10 pb-0 flex justify-between items-center mb-6">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-primary-container/10 p-4 rounded-2xl">
+                        <span className="material-symbols-outlined text-primary text-2xl">{cov.domus_magna ? 'workspace_premium' : 'castle'}</span>
+                      </div>
+                      {cov.is_official && (
+                        <div className="flex items-center gap-1.5 bg-secondary/10 text-secondary px-3 py-1 rounded-full border border-secondary/20">
+                          <span className="material-symbols-outlined text-xs">verified</span>
+                          <span className="font-label-sm !text-[9px]">Officiel</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="font-label-sm !text-[10px] bg-surface-container px-3 py-1 rounded-full">
+                      {TRIBUNALS.find(t => t.id === cov.tribunal)?.label || cov.tribunal}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <h3 className="font-headline-md mb-6 group-hover:text-primary transition-colors">
-                {cov.name}
-              </h3>
+              <div className="p-10 pt-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-headline-md mb-6 group-hover:text-primary transition-colors">
+                    {cov.name}
+                  </h3>
 
-              <div className="space-y-4 mb-10">
-                 <div className="flex items-center gap-3 text-on-surface-variant">
-                    <span className="material-symbols-outlined text-secondary text-sm">location_on</span>
-                    <span className="font-body-md !text-xs">Aura {cov.aura_type} de niveau {cov.aura_level}</span>
-                 </div>
-                 <div className="flex items-center gap-3 text-on-surface-variant">
-                    <span className="material-symbols-outlined text-secondary text-sm">history</span>
-                    <span className="font-body-md !text-xs">Fondée en l'an {cov.founding_year}</span>
-                 </div>
-              </div>
+                  <div className="space-y-4 mb-10">
+                     <div className="flex items-center gap-3 text-on-surface-variant">
+                        <span className="material-symbols-outlined text-secondary text-sm">location_on</span>
+                        <span className="font-body-md !text-xs">Aura {cov.aura_type} de niveau {cov.aura_level}</span>
+                     </div>
+                     <div className="flex items-center gap-3 text-on-surface-variant">
+                        <span className="material-symbols-outlined text-secondary text-sm">history</span>
+                        <span className="font-body-md !text-xs">Fondée en l'an {cov.founding_year}</span>
+                     </div>
+                  </div>
+                </div>
 
-              <div className="pt-6 border-t border-outline-variant/30 flex justify-between items-center">
-                 <span className="font-label-sm !text-[10px] text-primary">Ouvrir le Registre</span>
-                 <span className="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                <div className="pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+                   <span className="font-label-sm !text-[10px] text-primary">Ouvrir le Registre</span>
+                   <span className="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                </div>
               </div>
             </div>
           ))}
@@ -396,47 +428,55 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
 
       {/* Top Banner */}
       <header className="sticky top-0 z-50 p-6 pointer-events-none mb-4">
-        <div className="bg-surface-container/90 backdrop-blur-md p-6 rounded-2xl border border-outline-variant/30 shadow-xl flex justify-between items-end pointer-events-auto w-full">
-          <div>
-            {!forceTab && (
-              <div className="flex items-center gap-4 mb-3">
-                <span className="font-label-sm !text-[8px] bg-secondary/10 text-secondary px-3 py-1 rounded-full border border-secondary/20 uppercase tracking-widest">
-                  {TRIBUNALS.find(t => t.id === selectedCov?.tribunal)?.label || selectedCov?.tribunal}
+        <div className="bg-surface-container/90 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-xl flex flex-col md:flex-row justify-between items-stretch pointer-events-auto w-full overflow-hidden">
+          <div className="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              {!forceTab && (
+                <div className="flex items-center gap-4 mb-3">
+                  <span className="font-label-sm !text-[8px] bg-secondary/10 text-secondary px-3 py-1 rounded-full border border-secondary/20 uppercase tracking-widest">
+                    {TRIBUNALS.find(t => t.id === selectedCov?.tribunal)?.label || selectedCov?.tribunal}
+                  </span>
+                  <span className="font-label-sm !text-[8px] bg-primary-container/10 text-primary px-3 py-1 rounded-full border border-primary/20 uppercase tracking-widest">
+                    Aura {selectedCov?.aura_type} {selectedCov?.aura_level}
+                  </span>
+                </div>
+              )}
+              <h1 className="font-headline-lg text-on-surface flex items-center gap-4">
+                <span className="material-symbols-outlined text-primary text-4xl">
+                  {forceTab === 'magi' ? 'bolt' :
+                   forceTab === 'companions' ? 'shield' :
+                   forceTab === 'grogs' ? 'skull' :
+                   selectedCov?.domus_magna ? 'workspace_premium' : 'castle'}
                 </span>
-                <span className="font-label-sm !text-[8px] bg-primary-container/10 text-primary px-3 py-1 rounded-full border border-primary/20 uppercase tracking-widest">
-                  Aura {selectedCov?.aura_type} {selectedCov?.aura_level}
-                </span>
-              </div>
-            )}
-            <h1 className="font-headline-lg text-on-surface flex items-center gap-4">
-              <span className="material-symbols-outlined text-primary text-4xl">
-                {forceTab === 'magi' ? 'bolt' :
-                 forceTab === 'companions' ? 'shield' :
-                 forceTab === 'grogs' ? 'skull' :
-                 selectedCov?.domus_magna ? 'workspace_premium' : 'castle'}
-              </span>
-              {forceTab === 'magi' ? t('dashboard.tile.magi.title') :
-               forceTab === 'companions' ? t('dashboard.tile.companions.title') :
-               forceTab === 'grogs' ? t('dashboard.tile.grogs.title') :
-               selectedCov?.name}
-            </h1>
-            {forceTab === 'magi' && (
-              <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-primary/30 pl-4">
-                {t('character.magi.purpose')}
-              </p>
-            )}
-            {forceTab === 'companions' && (
-              <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-secondary/30 pl-4">
-                {t('character.companions.purpose')}
-              </p>
-            )}
-            {forceTab === 'grogs' && (
-              <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-outline-variant/30 pl-4">
-                {t('character.grogs.purpose')}
-              </p>
-            )}
+                {forceTab === 'magi' ? t('dashboard.tile.magi.title') :
+                 forceTab === 'companions' ? t('dashboard.tile.companions.title') :
+                 forceTab === 'grogs' ? t('dashboard.tile.grogs.title') :
+                 selectedCov?.name}
+              </h1>
+              {forceTab === 'magi' && (
+                <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-primary/30 pl-4">
+                  {t('character.magi.purpose')}
+                </p>
+              )}
+              {forceTab === 'companions' && (
+                <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-secondary/30 pl-4">
+                  {t('character.companions.purpose')}
+                </p>
+              )}
+              {forceTab === 'grogs' && (
+                <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-outline-variant/30 pl-4">
+                  {t('character.grogs.purpose')}
+                </p>
+              )}
+            </div>
           </div>
-
+          {!forceTab && selectedCov?.visual_path && (
+            <div className="w-full md:w-1/3 h-48 md:h-auto relative overflow-hidden border-l border-outline-variant/30">
+              <img src={selectedCov.visual_path} alt={selectedCov.name} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-surface-container/90 via-transparent to-transparent hidden md:block" />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface-container/90 via-transparent to-transparent block md:hidden" />
+            </div>
+          )}
         </div>
       </header>
 
@@ -640,22 +680,63 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
                 })
                 .map((char) => (
                   <div key={char.id} className="bg-surface p-6 rounded-3xl border border-outline-variant/50 hover:border-primary/40 hover:shadow-xl transition-all group cursor-pointer alchemical-border">
-                    <div className="flex items-center gap-5 mb-6">
-                      <div className="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant/20 group-hover:bg-primary-container/10 transition-colors">
-                        {getTypeIcon(char.character_type)}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-headline-md !text-xl group-hover:text-primary transition-colors">{char.name}</h4>
-                          {char.is_official && (
-                            <span className="font-label-sm !text-[7px] bg-secondary/10 text-secondary px-2 py-0.5 rounded border border-secondary/20">
-                              {t('character.label.official')}
-                            </span>
-                          )}
+                    <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-outline-variant/10">
+                      <div className="flex items-center gap-5">
+                        <div className="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center border border-outline-variant/20 group-hover:bg-primary-container/10 transition-colors">
+                          {getTypeIcon(char.character_type)}
                         </div>
-                        <p className="font-label-sm !text-[10px] text-on-surface-variant uppercase tracking-widest">{char.house || char.character_type}</p>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-headline-md !text-xl group-hover:text-primary transition-colors">{char.name}</h4>
+                            {char.is_official && (
+                              <span className="font-label-sm !text-[7px] bg-secondary/10 text-secondary px-2 py-0.5 rounded border border-secondary/20">
+                                {t('character.label.official')}
+                              </span>
+                            )}
+                          </div>
+                          <p className="font-label-sm !text-[10px] text-on-surface-variant uppercase tracking-widest mt-0.5">
+                            {char.house ? `Maison ${char.house}` : char.character_type}
+                            {char.birth_year ? ` • ${char.birth_year} - ${char.death_year || 'Présent'}` : ''}
+                          </p>
+                        </div>
                       </div>
+                      {char.source_book && (
+                        <div className="text-right hidden sm:block">
+                          <span className="font-label-sm !text-[9px] bg-surface-container px-2 py-1 rounded border border-outline-variant/20 text-on-surface-variant block">
+                            {char.source_book} {char.page_reference ? `(${char.page_reference})` : ''}
+                          </span>
+                        </div>
+                      )}
                     </div>
+
+                    {char.description && (
+                      <p className="font-body-md text-xs text-on-surface-variant mb-4 line-clamp-2 italic">
+                        "{char.description}"
+                      </p>
+                    )}
+
+                    {char.biographical_notice && (
+                      <div className="mb-4 p-3 bg-surface-container/30 rounded-xl border border-outline-variant/10 font-body-sm text-xs text-on-surface-variant/90 leading-relaxed">
+                        {char.biographical_notice}
+                      </div>
+                    )}
+
+                    {char.character_type === 'magus' && (char.favored_arts || (char.familiar_link && char.familiar_link !== 'Aucun')) && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 p-3 bg-surface-container/20 rounded-xl border border-outline-variant/10 text-xs">
+                        {char.favored_arts && (
+                          <div>
+                            <span className="text-primary font-label-sm uppercase tracking-wider block mb-1">Arts de Prédilection</span>
+                            <span className="font-medium text-on-surface">{char.favored_arts}</span>
+                          </div>
+                        )}
+                        {char.familiar_link && char.familiar_link !== 'Aucun' && (
+                          <div>
+                            <span className="text-secondary font-label-sm uppercase tracking-wider block mb-1">Lien de Familier</span>
+                            <span className="font-medium text-on-surface">{char.familiar_link}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-outline-variant/20">
                       <div>
@@ -668,8 +749,8 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-label-sm !text-[9px] text-on-surface-variant">Activité</p>
-                        <p className="font-body-md !text-xs italic text-secondary">Étude de l'Ignem</p>
+                        <p className="font-label-sm !text-[9px] text-on-surface-variant">Statut</p>
+                        <p className="font-body-md !text-xs italic text-secondary">{char.is_active ? 'Actif' : 'Inactif'}</p>
                       </div>
                     </div>
                   </div>

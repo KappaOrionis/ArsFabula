@@ -17,6 +17,13 @@ pub struct Character {
     pub description: Option<String>,
     pub is_active: bool,
     pub is_official: bool,
+    pub death_year: Option<i32>,
+    pub favored_arts: Option<String>,
+    pub familiar_link: Option<String>,
+    pub apprentice_registry: Option<String>,
+    pub biographical_notice: Option<String>,
+    pub source_book: Option<String>,
+    pub page_reference: Option<String>,
     pub created_at: String,
     pub updated_at: String,
 }
@@ -52,6 +59,7 @@ pub struct Covenant {
     pub vis_sources: Option<String>,
     pub laboratories: Option<String>,
     pub library: Option<String>,
+    pub visual_path: Option<String>,
     pub created_at: String,
     pub updated_at: String,
 }

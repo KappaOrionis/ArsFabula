@@ -36,7 +36,7 @@ pub async fn create_covenant(
     let id = Uuid::new_v4().to_string();
     
     sqlx::query(
-        "INSERT INTO covenants (id, name, aura_type, aura_level, founding_year, tribunal, is_official, domus_magna, season_status, location_desc, gps_coords, notable_magi, custodes, grogs_desc, vis_sources, laboratories, library) VALUES (?, ?, ?, ?, ?, ?, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
+        "INSERT INTO covenants (id, name, aura_type, aura_level, founding_year, tribunal, is_official, domus_magna, season_status, location_desc, gps_coords, notable_magi, custodes, grogs_desc, vis_sources, laboratories, library, visual_path) VALUES (?, ?, ?, ?, ?, ?, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
     )
     .bind(&id)
     .bind(name)

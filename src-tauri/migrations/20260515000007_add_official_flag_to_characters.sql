@@ -1,3 +1,3 @@
 -- 20260515000007_add_official_flag_to_characters.sql
--- Add is_official column to characters table
-ALTER TABLE characters ADD COLUMN is_official INTEGER NOT NULL DEFAULT 0;
+-- Add is_official column to characters table (Already added in 20260515000003_add_official_magi.sql)
+-- ALTER TABLE characters ADD COLUMN is_official INTEGER NOT NULL DEFAULT 0;

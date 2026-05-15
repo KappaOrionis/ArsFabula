@@ -24,6 +24,7 @@ pub struct Character {
     pub biographical_notice: Option<String>,
     pub source_book: Option<String>,
     pub page_reference: Option<String>,
+    pub visual_path: Option<String>,
     pub created_at: String,
     pub updated_at: String,
 }

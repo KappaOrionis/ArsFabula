@@ -25,9 +25,15 @@ We transition from an archetypal shared mapping to a **strict 1-to-1 unique visu
 
 Every covenant entity in the SQLite `covenants` table now references its own dedicated, unique illustration file in `public/covenants/` via the `visual_path` column.
 
+### Lore-Accurate Visual Mandate
+Each dedicated visual asset **must strictly correspond to the canonical or legendary description** of its respective covenant. The illustration must accurately reflect:
+- **Architectural Archetype**: e.g., subterranean magical forge (Verdi), Roman palatial villa (Magvillus, Harco), Alpine Renaissance palace (Valnastium), coastal storm fortress (Fudarus, Semitae), or primordial faerie glade (Horsinglas).
+- **Geographical & Tribunal Setting**: e.g., Mediterranean sunlight, dense Black Forest pine woods, or rugged Scottish highlands.
+- **Hermetic House Affiliation**: e.g., opulent Jerbiton aesthetics, utilitarian Verditius workshops, or martial Tytalus battlements.
+
 ## Rationale
 
-1. **Maximum Visual Immersion**: Providing a 100% unique, high-quality architectural or environmental illustration for every covenant significantly elevates the premium aesthetic of the desktop application.
+1. **Maximum Visual Immersion & Lore Fidelity**: Providing a 100% unique, lore-accurate architectural or environmental illustration for every covenant significantly elevates the premium aesthetic and narrative depth of the desktop application.
 2. **Preservation of Local-First Performance**: We retain the core architectural decision from ADR-0006 (serving local static assets from the Vite public directory). This guarantees zero database bloat for image bytes and instant load times in the Tauri frontend.
 3. **Simplified Asset Management**: A strict 1-to-1 mapping eliminates ambiguity in database migrations and makes future visual replacements straightforward (one file per covenant ID).
 
@@ -35,21 +41,27 @@ Every covenant entity in the SQLite `covenants` table now references its own ded
 
 ### Positive
 
-- **100% Unique Visual Representation**: Every covenant has a distinct hero image in the UI.
+- **100% Unique & Lore-Accurate Representation**: Every covenant has a distinct, canon-aligned hero image in the UI.
 - **Clean Database Mapping**: Migration scripts explicitly map each covenant ID to its specific file.
 - **Zero Database Bloat**: Relational data remains extremely lightweight, storing only relative file paths (`/covenants/cov_*.png`).
 
 ### Negative
 
 - **Increased Bundle Size**: Storing 27 unique high-resolution images increases the static asset footprint and installer size. This trade-off is fully accepted to meet the "Rich Aesthetics / Premium Design" requirement.
+- **Generation Quota Dependencies**: Batch generating 27 high-resolution digital masterpiece paintings can exhaust AI generation quotas (`429 Too Many Requests`) during intensive development sessions.
 
 ## Implementation Notes
 
 - Audited `public/covenants/` using SHA-256 file hashes to identify and eliminate all duplicate image files.
-- Seeded 27 unique, high-quality PNG assets in `public/covenants/`.
+- Seeded 27 unique PNG assets in `public/covenants/`.
 - Created a dedicated visual asset (`cov_doxa_hermetica.png`) for the virtual covenant *Doxa Hermetica*.
 - Updated migration `20260516000001_add_covenant_visuals.sql` with 27 individual `UPDATE` statements to enforce the 1-to-1 mapping.
 - Purgatory cleanup of stale SQLite database artifacts (`arsfabula.db`) to ensure clean execution of the updated migration pipeline on startup.
+
+### Quota Mitigation & Asynchronous Asset Replacement
+During development sessions where AI image generation quotas are temporarily exhausted, high-quality local placeholder assets (such as high-resolution maps, project iconography, or UI mockups) are utilized to establish and verify the 1-to-1 unique file hash mapping. 
+
+**Mandatory Follow-up**: These placeholder assets must be systematically replaced with bespoke, lore-accurate digital masterpiece paintings as soon as the generation quota resets (typically a 4-hour window), without requiring any changes to the SQLite database or migration scripts.
 
 ## Related Decisions
 

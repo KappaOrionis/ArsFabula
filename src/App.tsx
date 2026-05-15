@@ -1,49 +1,43 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
+import { BrainStatus } from "./components/BrainStatus";
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const { t } = useTranslation();
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+    <main style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      height: '100vh',
+      gap: '40px'
+    }}>
+      <header style={{ textAlign: 'center' }}>
+        <h1 style={{ 
+          fontSize: '4rem', 
+          fontWeight: 800, 
+          letterSpacing: '-0.05em',
+          background: 'linear-gradient(to right, #8b5cf6, #10b981)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          marginBottom: '8px'
+        }}>
+          {t('app.title')}
+        </h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>
+          {t('app.subtitle')}
+        </p>
+      </header>
 
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <BrainStatus />
       </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
 
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+      <footer style={{ position: 'absolute', bottom: '20px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+        OpenArs License • Local AI Powered
+      </footer>
     </main>
   );
 }

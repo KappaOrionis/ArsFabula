@@ -37,7 +37,7 @@ export const BrainStatus = () => {
   }, []);
 
   return (
-    <div className="glass-panel" style={{ padding: '20px', maxWidth: '400px' }}>
+    <div className="px-4 py-4 mt-4 border-t border-white/5">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Brain size={24} color="var(--primary)" />

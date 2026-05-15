@@ -39,7 +39,7 @@ function App() {
             className={`sidebar-btn ${activeTab === 'characters' ? 'active' : ''}`}
           >
             <Users className="w-5 h-5" />
-            <span className="font-medium hidden md:block">Personnages</span>
+            <span className="font-medium hidden md:block">Alliances</span>
           </button>
 
           <button 
@@ -47,7 +47,7 @@ function App() {
             className={`sidebar-btn ${activeTab === 'codex' ? 'active' : ''}`}
           >
             <BookOpen className="w-5 h-5" />
-            <span className="font-medium hidden md:block">Codex Hermeticus</span>
+            <span className="font-medium hidden md:block">Codex</span>
           </button>
 
           <button 
@@ -57,6 +57,11 @@ function App() {
             <MapIcon className="w-5 h-5" />
             <span className="font-medium hidden md:block">Cartographie</span>
           </button>
+
+          {/* AI Connection section moved here */}
+          <div className="mt-4">
+            <BrainStatus />
+          </div>
         </div>
 
         <div className="mt-auto flex flex-col gap-2">
@@ -108,7 +113,6 @@ function App() {
 
               {/* Status Sidebar */}
               <div className="flex flex-col gap-4">
-                <BrainStatus />
                 <div className="p-6 bg-blue-500/5 border border-blue-500/10 rounded-3xl">
                   <h4 className="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <Info size={14} /> Tips

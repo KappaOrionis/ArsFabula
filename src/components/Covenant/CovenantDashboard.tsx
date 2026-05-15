@@ -11,21 +11,37 @@ interface Covenant {
   founding_year: number;
   is_official: boolean;
   domus_magna: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 interface Season {
   id: string;
+  covenant_id: string;
   year: number;
   quarter: string;
+  event_summary: string | null;
+  is_current: boolean;
+  completed_at: string | null;
+  created_at: string;
 }
 
 interface Character {
   id: string;
+  covenant_id: string;
   name: string;
   character_type: 'magus' | 'companion' | 'grog';
   house?: string;
+  birth_year: number;
   warp_score: number;
+  warp_points: number;
+  confidence_score: number;
+  confidence_points: number;
+  description?: string;
+  is_active: boolean;
   is_official: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 interface Props {
@@ -71,15 +87,19 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
     description: ''
   });
 
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const fetchAllCovenants = async () => {
     try {
+      setErrorMsg(null);
       const data: Covenant[] = await invoke('list_covenants');
       setAllCovenants(data);
       if (!selectedCov && data.length > 0 && forceTab) {
         handleSelectCovenant(data[0]);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to fetch covenants:', error);
+      setErrorMsg(error.toString());
     } finally {
       setLoading(false);
     }
@@ -214,6 +234,17 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
     );
   };
 
+  if (errorMsg) {
+    return (
+      <div className="p-20 text-center">
+        <h2 className="font-headline-lg text-red-500">Erreur lors de la lecture des archives</h2>
+        <p className="font-body-md text-on-surface-variant opacity-80 mt-4 max-w-2xl mx-auto p-4 bg-red-500/10 rounded-lg border border-red-500/30">
+          {errorMsg}
+        </p>
+      </div>
+    );
+  }
+
   if (loading && !allCovenants.length) return <div className="p-20 text-center font-headline-md opacity-50 animate-pulse">Consultation des Archives...</div>;
 
   // 2. List View (All Alliances)
@@ -275,17 +306,20 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {filteredCovenants.length === 0 && !loading && (
+            <div className="col-span-full py-20 text-center">
+              <span className="material-symbols-outlined text-6xl text-on-surface-variant opacity-20 mb-4">search_off</span>
+              <p className="font-headline-md text-on-surface-variant opacity-50">Aucune alliance trouvée dans les archives.</p>
+              <p className="font-body-md text-on-surface-variant opacity-40 mt-2">Vérifiez vos filtres ou créez une nouvelle alliance.</p>
+            </div>
+          )}
           {filteredCovenants.map((cov) => (
             <div 
               key={cov.id}
               onClick={() => handleSelectCovenant(cov)}
               className="bg-surface p-10 rounded-[2rem] border border-outline-variant/50 shadow-sm hover:shadow-2xl hover:scale-[1.01] transition-all cursor-pointer group relative overflow-hidden"
             >
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                <span className="material-symbols-outlined text-[80px]">{cov.domus_magna ? 'workspace_premium' : 'castle'}</span>
-              </div>
-
-              <div className="flex justify-between items-start mb-10">
+              <div className="flex justify-between items-center mb-10">
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-3">
                     <div className="bg-primary-container/10 p-4 rounded-2xl">

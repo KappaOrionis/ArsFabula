@@ -1,4 +1,5 @@
 use serde::{Serialize, Deserialize};
+// Triggers a backend rebuild 3
 use sqlx::FromRow;
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
@@ -41,6 +42,9 @@ pub struct Covenant {
     pub size: String,
     pub description: Option<String>,
     pub is_official: bool,
+    pub domus_magna: Option<String>,
+    pub created_at: String,
+    pub updated_at: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
@@ -57,6 +61,7 @@ pub struct Spell {
     pub target_param: String,
     pub description: Option<String>,
     pub openars_page: Option<String>,
+    pub created_at: String,
 }
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct Season {
@@ -66,6 +71,8 @@ pub struct Season {
     pub quarter: String,
     pub event_summary: Option<String>,
     pub is_current: bool,
+    pub completed_at: Option<String>,
+    pub created_at: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
@@ -75,4 +82,5 @@ pub struct Resource {
     pub resource_type: String,
     pub amount: i32,
     pub notes: Option<String>,
+    pub updated_at: String,
 }

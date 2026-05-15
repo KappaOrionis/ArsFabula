@@ -15,10 +15,26 @@ pub async fn init_db(app_handle: &AppHandle) -> Result<SqlitePool, sqlx::Error> 
     let options = SqliteConnectOptions::from_str(&db_url)?
         .create_if_missing(true);
 
-    let pool = SqlitePool::connect_with(options).await?;
+    let pool_result = SqlitePool::connect_with(options).await;
+    let pool = match pool_result {
+        Ok(p) => p,
+        Err(e) => {
+            let _ = std::fs::write(app_dir.join("db_init_error.log"), format!("connect_with error: {}", e));
+            return Err(e);
+        }
+    };
 
     // Run migrations automatically
-    sqlx::migrate!("./migrations").run(&pool).await?;
+    let migration_result = sqlx::migrate!("./migrations").run(&pool).await;
+    match migration_result {
+        Ok(_) => {
+            let _ = std::fs::write(app_dir.join("db_init_success.log"), "migrations successful");
+        },
+        Err(e) => {
+            let _ = std::fs::write(app_dir.join("db_init_error.log"), format!("migrate run error: {}", e));
+            return Err(sqlx::Error::Configuration(e.into()));
+        }
+    }
 
     Ok(pool)
 }

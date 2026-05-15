@@ -6,7 +6,7 @@ use tauri::State;
 #[command]
 pub async fn list_characters(pool: State<'_, SqlitePool>) -> Result<Vec<Character>, String> {
     let characters = sqlx::query_as::<_, Character>(
-        "SELECT * FROM characters ORDER BY name ASC"
+        "SELECT id, covenant_id, name, character_type, house, birth_year, warp_score, warp_points, confidence_score, confidence_points, description, is_active, is_official, created_at, updated_at FROM characters ORDER BY name ASC"
     )
     .fetch_all(&*pool)
     .await

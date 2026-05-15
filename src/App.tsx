@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BrainStatus } from "./components/BrainStatus";
 import CodexView from "./components/Codex/CodexView";
 import CovenantDashboard from "./components/Covenant/CovenantDashboard";
 import MapView from "./components/Map/MapView";
@@ -16,23 +15,19 @@ function App() {
   return (
     <div className="flex h-screen bg-background text-on-surface overflow-hidden font-body-md parchment-texture">
       {/* Sidebar - Navigation Drawer style */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 md:w-80 sidebar transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 overflow-y-auto shadow-2xl`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 md:w-80 sidebar flex flex-col transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 overflow-y-auto shadow-2xl`}>
         <div className="p-8 mb-6">
-          <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary text-3xl">menu_book</span>
-            <h1 className="font-headline-lg text-primary">Ars Fabula</h1>
+          <div 
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <span className="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">menu_book</span>
+            <h1 className="font-headline-lg text-primary transition-colors">Ars Fabula</h1>
           </div>
           <div className="h-[1px] w-12 bg-secondary/30 mt-4" />
         </div>
 
         <nav className="flex flex-col px-4 gap-1">
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className={`sidebar-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
-          >
-            <span className="material-symbols-outlined">home</span>
-            <span className="font-label-sm">Accueil</span>
-          </button>
 
           <button
             onClick={() => setActiveTab('map')}
@@ -86,16 +81,10 @@ function App() {
             <span className="font-label-sm">Codex</span>
           </button>
 
-          <div className="mt-8 px-4">
-            <BrainStatus />
-          </div>
         </nav>
 
-        <div className="mt-auto p-4 flex flex-col gap-2">
-          <button className="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:text-primary transition-colors font-label-sm uppercase tracking-widest text-[10px]">
-            <span className="material-symbols-outlined">settings</span>
-            <span>Paramètres</span>
-          </button>
+        <div className="mt-auto p-8 opacity-30 font-label-sm text-center pointer-events-none">
+          Ars Fabula // Local-First // v2.0
         </div>
       </aside>
 
@@ -162,10 +151,6 @@ function App() {
         {activeTab === 'companions' && <CovenantDashboard forceTab="companions" />}
         {activeTab === 'grogs' && <CovenantDashboard forceTab="grogs" />}
         {activeTab === 'codex' && <CodexView />}
-
-        <footer className="absolute bottom-6 right-8 text-on-surface-variant font-label-sm opacity-30 pointer-events-none">
-          Ars Fabula // Local-First // v2.0
-        </footer>
       </main>
     </div>
   );

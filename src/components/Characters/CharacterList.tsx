@@ -12,6 +12,7 @@ interface Character {
   death_year?: number | null;
   source_book?: string | null;
   page_reference?: string | null;
+  visual_path?: string | null;
 }
 
 const CharacterList: React.FC = () => {
@@ -65,8 +66,12 @@ const CharacterList: React.FC = () => {
               <div key={char.id} className="codex-card group cursor-pointer">
                 <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-slate-800/50">
                   <div className="flex items-center gap-4">
-                    <div style={{ padding: '12px', background: 'rgba(255,255,255,0.05)', borderRadius: '16px' }}>
-                      {getTypeIcon(char.character_type)}
+                    <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px' }} className="w-16 h-16 flex items-center justify-center overflow-hidden relative shadow-md">
+                      {char.visual_path ? (
+                        <img src={char.visual_path} alt={char.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                      ) : (
+                        getTypeIcon(char.character_type)
+                      )}
                     </div>
                     <div>
                       <h3 className="font-bold text-lg group-hover:text-blue-400 transition-colors">{char.name}</h3>

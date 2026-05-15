@@ -12,6 +12,7 @@ This directory contains the documented architectural decisions for the ArsFabula
 | [0005](0005-hermetic-magi-census-ingestion.md) | Hermetic Magi Census Ingestion and Character Metadata Expansion | Accepted | 2026-05-15 |
 | [0006](0006-covenant-visual-assets-architecture.md) | Covenant Visual Assets Architecture and Storage Strategy | Superseded | 2026-05-16 |
 | [0007](0007-unique-covenant-visual-assets-architecture.md) | 1-to-1 Unique Covenant Visual Assets Mapping | Accepted | 2026-05-16 |
+| [0008](0008-unique-character-visual-assets-architecture.md) | 1-to-1 Unique Character Visual Assets Mapping | Accepted | 2026-05-16 |
 
 ## Guidelines
 

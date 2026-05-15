@@ -14,6 +14,15 @@ try {
 }
 
 # 2. Check Rust
+# Check if cargo is in PATH, if not try to find it in default home location
+if (-not (Get-Command cargo -ErrorAction SilentlyContinue)) {
+    $cargoPath = "$HOME\.cargo\bin"
+    if (Test-Path "$cargoPath\cargo.exe") {
+        $env:PATH += ";$cargoPath"
+        Write-Host "[OK] Cargo found in $cargoPath and added to session PATH" -ForegroundColor Yellow
+    }
+}
+
 try {
     $cargoVersion = cargo --version
     Write-Host "[OK] Rust/Cargo is installed ($cargoVersion)" -ForegroundColor Green

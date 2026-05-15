@@ -4,7 +4,7 @@ import { Brain, RefreshCw, AlertCircle, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface AIStatus {
-  is_connected: bool;
+  is_connected: boolean;
   model_name: string | null;
   error: string | null;
 }

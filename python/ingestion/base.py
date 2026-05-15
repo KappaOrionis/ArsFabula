@@ -1,6 +1,9 @@
 import os
 from typing import Optional
-import tomli
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 import chromadb
@@ -28,7 +31,7 @@ class AppConfig(BaseSettings):
     @classmethod
     def load(cls, path: str = "config/ai.toml") -> "AppConfig":
         with open(path, "rb") as f:
-            data = tomli.load(f)
+            data = tomllib.load(f)
         return cls(**data)
 
 def get_chroma_client(config: AppConfig):

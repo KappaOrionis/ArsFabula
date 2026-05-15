@@ -1,15 +1,16 @@
+import sys
 import subprocess
 import os
 from pathlib import Path
 
 def run_script(script_path: str):
     print(f"\n>>> Running {script_path}...")
-    result = subprocess.run(["python", script_path], capture_output=True, text=True)
-    if result.returncode == 0:
-        print(result.stdout)
-    else:
-        print(f"Error in {script_path}:")
-        print(result.stderr)
+    process = subprocess.Popen([sys.executable, script_path], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    for line in process.stdout:
+        print(line, end="")
+    process.wait()
+    if process.returncode != 0:
+        print(f"\n[!] Error in {script_path} (Exit code: {process.returncode})")
 
 def main():
     print("=== ArsFabula Global Ingestion Pipeline ===")

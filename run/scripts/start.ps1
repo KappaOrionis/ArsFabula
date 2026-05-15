@@ -41,5 +41,11 @@ if (-not $tcpConnection.TcpTestSucceeded) {
     if ($confirm -ne "y") { exit }
 }
 
+Write-Host "Cleaning up port 5173..." -ForegroundColor Gray
+$process = Get-NetTCPConnection -LocalPort 5173 -ErrorAction SilentlyContinue
+if ($process) {
+    Stop-Process -Id $process.OwningProcess -Force
+}
+
 Write-Host "Launching dev environment (Port 5173)..." -ForegroundColor Green
-npm run dev
+npm run tauri dev

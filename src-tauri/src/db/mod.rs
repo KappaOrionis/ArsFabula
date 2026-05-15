@@ -2,7 +2,6 @@ pub mod models;
 
 use sqlx::sqlite::{SqliteConnectOptions, SqlitePool};
 use std::str::FromStr;
-use std::path::Path;
 use tauri::AppHandle;
 use tauri::Manager;
 

@@ -1,20 +1,30 @@
 :root {
-  --primary: #8b5cf6;
-  --primary-hover: #7c3aed;
-  --bg-dark: #020617;
-  --bg-sidebar: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.4);
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
+  /* Colors from DESIGN.md */
+  --primary: #6b0d0a; /* Cinnabar Red */
+  --primary-container: #8b261e;
+  --accent: #7c5715; /* Aged Gold */
+  --bg-dark: #fcf9f2; /* Deep Parchment (Base Background) */
+  --bg-sidebar: #f1eee7; /* Surface Container */
+  --bg-card: #ffffff; /* Fresh Vellum */
+  --text-main: #1c1c18; /* Iron-Gall Ink */
+  --text-muted: #57423f;
   --success: #10b981;
-  --danger: #ef4444;
-  --blue-400: #60a5fa;
-  --blue-500: #3b82f6;
-  --blue-600: #2563eb;
-  --emerald-400: #34d399;
-  --purple-500: #a855f7;
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --danger: #ba1a1a;
+  --outline: #8b716e;
+  --outline-variant: #dec0bb;
+  
+  /* Typography */
+  --font-header: 'EB Garamond', serif;
+  --font-body: 'Source Serif 4', serif;
+  --font-label: 'Hanken Grotesk', sans-serif;
+  --font-main: 'Source Serif 4', serif;
+
+  /* Spacing & Shapes */
+  --radius-sm: 0.125rem;
+  --radius-default: 0.25rem;
+  --radius-lg: 0.5rem;
+  --glass-border: rgba(139, 113, 110, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.6);
 }
 
 * {
@@ -118,27 +128,29 @@ body {
 .italic { font-style: italic; }
 .leading-relaxed { line-height: 1.625; }
 
-.text-blue-400 { color: var(--blue-400); }
-.text-blue-500 { color: var(--blue-500); }
-.text-emerald-500 { color: var(--emerald-400); }
-.text-slate-100 { color: #f1f5f9; }
-.text-slate-200 { color: #e2e8f0; }
-.text-slate-400 { color: #94a3b8; }
-.text-slate-500 { color: #64748b; }
-.text-slate-600 { color: #475569; }
+.text-blue-400 { color: var(--primary); }
+.text-blue-500 { color: var(--primary); }
+.text-emerald-500 { color: var(--accent); }
+.text-purple-500 { color: var(--text-muted); }
 
-.bg-blue-500\/5 { background-color: rgba(59, 130, 246, 0.05); }
-.bg-blue-500\/20 { background-color: rgba(59, 130, 246, 0.2); }
-.bg-purple-500\/20 { background-color: rgba(168, 85, 247, 0.2); }
-.bg-slate-900\/30 { background-color: rgba(15, 23, 42, 0.3); }
-.bg-slate-900\/50 { background-color: rgba(15, 23, 42, 0.5); }
-.border-slate-800 { border: 1px solid #1e293b; }
-.border-slate-800\/50 { border: 1px solid rgba(30, 41, 59, 0.5); }
-.border-white\/10 { border: 1px solid rgba(255, 255, 255, 0.1); }
-.border-blue-500\/10 { border: 1px solid rgba(59, 130, 246, 0.1); }
+.bg-blue-500\/5 { background-color: rgba(107, 13, 10, 0.05); }
+.bg-blue-500\/20 { background-color: rgba(107, 13, 10, 0.2); }
+.bg-purple-500\/20 { background-color: rgba(87, 66, 63, 0.1); }
+.bg-slate-900\/30 { background-color: rgba(0, 0, 0, 0.03); }
+.bg-slate-900\/50 { background-color: rgba(0, 0, 0, 0.05); }
+.border-slate-800 { border: 1px solid var(--outline-variant); }
+.border-slate-800\/50 { border: 1px solid rgba(139, 113, 110, 0.2); }
+.border-white\/10 { border: 1px solid var(--outline-variant); }
+.border-blue-500\/10 { border: 1px solid rgba(107, 13, 10, 0.1); }
 
 .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops, var(--blue-400), var(--purple-500))); }
 .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops, var(--blue-400), var(--purple-500))); }
+.bg-gradient-to-r { 
+  background-image: linear-gradient(to right, var(--primary), var(--accent)); 
+}
+.bg-gradient-to-br { 
+  background-image: linear-gradient(to bottom right, var(--primary), #4338ca); 
+}
 .bg-clip-text { -webkit-background-clip: text; background-clip: text; }
 .text-transparent { color: transparent; }
 
@@ -157,63 +169,152 @@ body {
 }
 
 /* Specific Component Classes */
+/* Scholarly Hermeticism Theme Overrides */
+.sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--outline-variant);
+  box-shadow: none;
+  padding: 2rem 1rem;
+}
+
+.main-content {
+  background: var(--bg-dark);
+  position: relative;
+}
+
+/* Digital Parchment Effect */
+.main-content::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%2 noiseFilter)'/%3E%3C/svg%3E");
+}
+
 .sidebar-btn {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.875rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   width: 100%;
-  border-radius: 12px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius-default);
+  transition: all 0.2s ease;
   color: var(--text-muted);
   border: 1px solid transparent;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: var(--font-label);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
 }
 
 .sidebar-btn.active {
-  background: rgba(37, 99, 235, 0.1);
-  color: var(--blue-400);
-  border-color: rgba(37, 99, 235, 0.2);
+  background: var(--text-main);
+  color: var(--accent);
+  border-color: var(--text-main);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-btn:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(139, 113, 110, 0.05);
   color: var(--text-main);
 }
 
 .codex-card {
   position: relative;
   background: var(--bg-card);
-  border: 1px solid var(--glass-border);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  backdrop-filter: blur(8px);
-  transition: all 0.3s;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-default);
+  padding: 2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .codex-card:hover {
-  border-color: rgba(59, 130, 246, 0.5);
-  background: rgba(30, 41, 59, 0.6);
   transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 25px -10px rgba(107, 13, 10, 0.1);
+}
+
+/* Grimoire Header Style */
+.font-header {
+  font-family: var(--font-header);
+  color: var(--primary); /* Rubrication */
+}
+
+.btn-primary {
+  background: var(--text-main);
+  color: var(--accent);
+  font-family: var(--font-label);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.75rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: #2a2a24;
+  transform: translateY(-1px);
 }
 
 .search-input {
   width: 100%;
-  background: rgba(15, 23, 42, 0.5);
-  border: 1px solid var(--glass-border);
-  border-radius: 1rem;
-  padding: 1rem 1rem 1rem 3.5rem;
-  color: white;
-  font-size: 1.125rem;
-  transition: all 0.2s;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--outline-variant);
+  border-radius: 0;
+  padding: 1rem 0 1rem 3rem;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  transition: all 0.3s;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: var(--blue-500);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-bottom-color: var(--primary);
+  background: rgba(107, 13, 10, 0.02);
+}
+
+/* Brain Status Component */
+.brain-status-container {
+  padding: 1.5rem 1rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brain-status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.brain-status-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.refresh-btn {
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 /* Status Badge */

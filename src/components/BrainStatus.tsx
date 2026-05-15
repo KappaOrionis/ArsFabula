@@ -37,18 +37,18 @@ export const BrainStatus = () => {
   }, []);
 
   return (
-    <div className="px-4 py-4 mt-4 border-t border-white/5">
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Brain size={24} color="var(--primary)" />
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{t('brain.status.title')}</h3>
+    <div className="brain-status-container">
+      <div className="brain-status-header">
+        <div className="brain-status-title">
+          <Brain size={20} className="text-blue-400" />
+          <span className="font-header text-lg">{t('brain.status.title')}</span>
         </div>
         <button 
           onClick={checkStatus} 
           disabled={loading}
-          style={{ padding: '8px', background: 'transparent', border: '1px solid var(--glass-border)' }}
+          className="refresh-btn"
         >
-          <RefreshCw size={16} className={loading ? 'pulse' : ''} />
+          <RefreshCw size={14} className={loading ? 'pulse' : ''} />
         </button>
       </div>
 
@@ -68,13 +68,13 @@ export const BrainStatus = () => {
       </div>
 
       {status.is_connected && status.model_name && (
-        <div style={{ marginTop: '12px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-          <strong>{t('brain.status.model')}:</strong> {status.model_name}
+        <div className="mt-3 text-xs text-muted">
+          <strong className="text-primary">{t('brain.status.model')}:</strong> {status.model_name}
         </div>
       )}
 
       {status.error && !status.is_connected && (
-        <div style={{ marginTop: '12px', fontSize: '0.8rem', color: 'var(--danger)', opacity: 0.8 }}>
+        <div className="mt-3 text-xs text-danger opacity-80 italic">
           {status.error}
         </div>
       )}

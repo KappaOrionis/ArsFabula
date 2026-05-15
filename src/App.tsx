@@ -4,12 +4,12 @@ import { BrainStatus } from "./components/BrainStatus";
 import CodexView from "./components/Codex/CodexView";
 import CovenantDashboard from "./components/Covenant/CovenantDashboard";
 import MapView from "./components/Map/MapView";
-import { LayoutDashboard, BookOpen, Users, Settings, Info, Map as MapIcon } from "lucide-react";
+import { LayoutDashboard, BookOpen, Users, Settings, Info, Map as MapIcon, Zap, Shield, Skull } from "lucide-react";
 import logo from "./assets/logo.png";
 import icon from "./assets/icon.png";
 import "./App.css";
 
-type Tab = 'dashboard' | 'codex' | 'characters' | 'map';
+type Tab = 'dashboard' | 'map' | 'covenants' | 'magi' | 'companions' | 'grogs' | 'codex';
 
 function App() {
   const { t } = useTranslation();
@@ -31,23 +31,7 @@ function App() {
             className={`sidebar-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
           >
             <LayoutDashboard className="w-5 h-5" />
-            <span className="font-medium hidden md:block">Tableau de Bord</span>
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab('characters')}
-            className={`sidebar-btn ${activeTab === 'characters' ? 'active' : ''}`}
-          >
-            <Users className="w-5 h-5" />
-            <span className="font-medium hidden md:block">L'Alliance</span>
-          </button>
-
-          <button 
-            onClick={() => setActiveTab('codex')}
-            className={`sidebar-btn ${activeTab === 'codex' ? 'active' : ''}`}
-          >
-            <BookOpen className="w-5 h-5" />
-            <span className="font-medium hidden md:block">Codex</span>
+            <span className="font-medium hidden md:block">Accueil</span>
           </button>
 
           <button 
@@ -55,7 +39,51 @@ function App() {
             className={`sidebar-btn ${activeTab === 'map' ? 'active' : ''}`}
           >
             <MapIcon className="w-5 h-5" />
-            <span className="font-medium hidden md:block">Cartographie</span>
+            <span className="font-medium hidden md:block">Europe mythique</span>
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('covenants')}
+            className={`sidebar-btn ${activeTab === 'covenants' ? 'active' : ''}`}
+          >
+            <Users className="w-5 h-5" />
+            <span className="font-medium hidden md:block">Alliances</span>
+          </button>
+
+          <div className="h-px w-8 bg-outline/20 mx-6 my-2" />
+
+          <button 
+            onClick={() => setActiveTab('magi')}
+            className={`sidebar-btn ${activeTab === 'magi' ? 'active' : ''}`}
+          >
+            <Zap className="w-5 h-5" />
+            <span className="font-medium hidden md:block">Magi</span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('companions')}
+            className={`sidebar-btn ${activeTab === 'companions' ? 'active' : ''}`}
+          >
+            <Shield className="w-5 h-5" />
+            <span className="font-medium hidden md:block">Custodes</span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('grogs')}
+            className={`sidebar-btn ${activeTab === 'grogs' ? 'active' : ''}`}
+          >
+            <Skull className="w-5 h-5" />
+            <span className="font-medium hidden md:block">Serviteurs</span>
+          </button>
+
+          <div className="h-px w-8 bg-outline/20 mx-6 my-2" />
+
+          <button 
+            onClick={() => setActiveTab('codex')}
+            className={`sidebar-btn ${activeTab === 'codex' ? 'active' : ''}`}
+          >
+            <BookOpen className="w-5 h-5" />
+            <span className="font-medium hidden md:block">Codex</span>
           </button>
 
           {/* AI Connection section moved here */}
@@ -181,9 +209,12 @@ function App() {
           </div>
         )}
 
-        {activeTab === 'characters' && <CovenantDashboard />}
-        {activeTab === 'codex' && <CodexView />}
         {activeTab === 'map' && <MapView />}
+        {activeTab === 'covenants' && <CovenantDashboard />}
+        {activeTab === 'magi' && <CovenantDashboard forceTab="magi" />}
+        {activeTab === 'companions' && <CovenantDashboard forceTab="companions" />}
+        {activeTab === 'grogs' && <CovenantDashboard forceTab="grogs" />}
+        {activeTab === 'codex' && <CodexView />}
 
         <footer className="absolute bottom-6 right-8 text-slate-600 text-xs font-mono uppercase tracking-widest pointer-events-none">
           ArsFabula // Local-First // v2.0

@@ -39,6 +39,7 @@ pub struct Covenant {
     pub tribunal: String,
     pub size: String,
     pub description: Option<String>,
+    pub is_official: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]

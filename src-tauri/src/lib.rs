@@ -40,7 +40,8 @@ pub fn run() {
             commands::covenant::create_covenant,
             commands::covenant::get_current_season,
             commands::covenant::advance_season,
-            commands::covenant::get_resources
+            commands::covenant::get_resources,
+            commands::covenant::delete_covenant
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

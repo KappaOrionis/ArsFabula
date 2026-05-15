@@ -130,3 +130,13 @@ pub async fn get_resources(covenant_id: String, pool: State<'_, SqlitePool>) -> 
     .map_err(|e| e.to_string())?;
     Ok(resources)
 }
+
+#[command]
+pub async fn delete_covenant(id: String, pool: State<'_, SqlitePool>) -> Result<(), String> {
+    sqlx::query("DELETE FROM covenants WHERE id = ?")
+        .bind(id)
+        .execute(&*pool)
+        .await
+        .map_err(|e| e.to_string())?;
+    Ok(())
+}

@@ -6,7 +6,7 @@ use tauri::State;
 #[command]
 pub async fn list_characters(pool: State<'_, SqlitePool>) -> Result<Vec<Character>, String> {
     let characters = sqlx::query_as::<_, Character>(
-        "SELECT id, covenant_id, name, character_type, house, birth_year, warp_score, warp_points, confidence_score, confidence_points, description, is_active, is_official, death_year, favored_arts, familiar_link, apprentice_registry, biographical_notice, source_book, page_reference, created_at, updated_at FROM characters ORDER BY name ASC"
+        "SELECT id, covenant_id, name, character_type, house, birth_year, warp_score, warp_points, confidence_score, confidence_points, description, is_active, is_official, death_year, favored_arts, familiar_link, apprentice_registry, biographical_notice, source_book, page_reference, visual_path, created_at, updated_at FROM characters ORDER BY name ASC"
     )
     .fetch_all(&*pool)
     .await
@@ -18,7 +18,7 @@ pub async fn list_characters(pool: State<'_, SqlitePool>) -> Result<Vec<Characte
 #[command]
 pub async fn get_character(id: String, pool: State<'_, SqlitePool>) -> Result<Character, String> {
     let character = sqlx::query_as::<_, Character>(
-        "SELECT id, covenant_id, name, character_type, house, birth_year, warp_score, warp_points, confidence_score, confidence_points, description, is_active, is_official, death_year, favored_arts, familiar_link, apprentice_registry, biographical_notice, source_book, page_reference, created_at, updated_at FROM characters WHERE id = ?"
+        "SELECT id, covenant_id, name, character_type, house, birth_year, warp_score, warp_points, confidence_score, confidence_points, description, is_active, is_official, death_year, favored_arts, familiar_link, apprentice_registry, biographical_notice, source_book, page_reference, visual_path, created_at, updated_at FROM characters WHERE id = ?"
     )
     .bind(id)
     .fetch_one(&*pool)
@@ -44,6 +44,7 @@ pub async fn create_character(
     biographical_notice: Option<String>,
     source_book: Option<String>,
     page_reference: Option<String>,
+    visual_path: Option<String>,
     pool: State<'_, SqlitePool>
 ) -> Result<String, String> {
     // Default covenant if not provided (should be handled better in real app)
@@ -61,9 +62,10 @@ pub async fn create_character(
 
     let id = uuid::Uuid::new_v4().to_string();
     let by = birth_year.unwrap_or(1200);
+    let vp = visual_path.unwrap_or_else(|| "/characters/unknown.png".to_string());
     
     sqlx::query(
-        "INSERT INTO characters (id, covenant_id, name, character_type, house, birth_year, death_year, description, favored_arts, familiar_link, apprentice_registry, biographical_notice, source_book, page_reference, is_official, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1)"
+        "INSERT INTO characters (id, covenant_id, name, character_type, house, birth_year, death_year, description, favored_arts, familiar_link, apprentice_registry, biographical_notice, source_book, page_reference, visual_path, is_official, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 1)"
     )
     .bind(&id)
     .bind(cov_id)
@@ -79,6 +81,7 @@ pub async fn create_character(
     .bind(biographical_notice)
     .bind(source_book)
     .bind(page_reference)
+    .bind(vp)
     .execute(&*pool)
     .await
     .map_err(|e| e.to_string())?;

@@ -300,7 +300,7 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
 
         {/* Search & Filter Bar */}
         <div className="px-10 pb-10">
-          <div className="max-w-6xl mb-12">
+          <div className="max-w-6xl mb-12 space-y-4">
             <div className="flex items-center gap-4 bg-surface p-2 pl-6 rounded-full border border-outline-variant shadow-sm w-full">
               <span className="material-symbols-outlined text-on-surface-variant opacity-60">search</span>
               <input 
@@ -322,6 +322,14 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
                   {TRIBUNALS.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
                 </select>
               </div>
+            </div>
+
+            {/* Compteur d'alliances sous le filtre */}
+            <div className="flex items-center gap-2 px-4 text-on-surface-variant opacity-80 font-label-sm animate-fade-in">
+              <span className="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+              <span>
+                {filteredCovenants.length} alliance{filteredCovenants.length > 1 ? 's' : ''} affichée{filteredCovenants.length > 1 ? 's' : ''} sur {allCovenants.length} au total
+              </span>
             </div>
           </div>
 

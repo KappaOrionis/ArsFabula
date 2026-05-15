@@ -1,5 +1,5 @@
 -- 20260516000001_add_covenant_visuals.sql
--- Add visual_path column to covenants table and map all 26 covenants to their high-quality archetype visuals
+-- Add visual_path column to covenants table and map all 27 covenants to their high-quality archetype visuals
 
 ALTER TABLE covenants ADD COLUMN visual_path TEXT;
 
@@ -38,3 +38,5 @@ UPDATE covenants SET visual_path = '/covenants/cov_jaferia_palace.png' WHERE id 
 UPDATE covenants SET visual_path = '/covenants/cov_castrasolis_arena.png' WHERE id = 'cov-castrasolis-0000';
 
 UPDATE covenants SET visual_path = '/covenants/cov_acre_crypt.png' WHERE id = 'cov-acre-0000';
+UPDATE covenants SET visual_path = '/covenants/cov_doxa_hermetica.png' WHERE id = 'official-cov-id-0000';
+

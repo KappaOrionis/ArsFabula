@@ -11,7 +11,9 @@ and narrative history through an AI-assisted interface.
 
 **Stack**: Tauri (desktop shell) + React (frontend) + Rust/Python (backend) + SQLite (data) + ChromaDB/FAISS (RAG lore)
 
-**Knowledge Base**: The system ingests official *Ars Magica 5e* sources (Markdown rules, Excel creature indices, PDF grimoires) as listed in `SOURCES.md`. These are processed into a structured logic engine (SQLite) and a semantic lore engine (ChromaDB).
+**Knowledge Base**: The system ingests official *Ars Magica 5e* sources (Markdown rules, Excel creature indices, PDF grimoires) as listed in `resources/SOURCES.md`. 
+> [!IMPORTANT]
+> **Priority Rule**: All agents and system components MUST prioritize sources located in the `resources/` directory for lore, rules calculation, and data ingestion. Do not use external web searches or assumptions if the data exists in `resources/`.
 
 ## Critical Language Rules
 
@@ -112,10 +114,11 @@ ArsFabula/
 │   └── tests/
 ├── data/
 │   └── chroma_db/            # ChromaDB persistence (gitignored)
-├── config/
-│   └── ai.toml               # AI model configuration
+├── resources/                # Primary source of truth (Official Lore & Rules)
+│   ├── SOURCES.md            # Registry of all local documents
+│   └── Ars-Magica-Open-License/ # Core rules repository
 ├── PRD_Ars_Fabula.md         # Product Requirements Document
-└── AGENTS.md                 # This file
+├── AGENTS.md                 # This file
 ```
 
 ## Common Commands

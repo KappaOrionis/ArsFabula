@@ -1,17 +1,17 @@
 Liste d'Acquisition des Données : Ars Magica 5e (Assistance IA)
 
-| Catégorie de donnée | Source à télécharger | Lien exact |
-| --- | --- | --- |
-| Corpus Textuel Brut (Ontologie et Règles) | Dépôt GitHub Markdown (OriginalMadman) | [https://github.com/OriginalMadman/Ars-Magica-Open-License](https://github.com/OriginalMadman/Ars-Magica-Open-License) |
-| Index et Bases de Données (Moteur Logique) | ArM5 Creature Index (Excel) | [https://www.atlas-games.com/atlas-cms/resources/downloads/ars-magica-5th-edition-creature-index-v3.xls](https://www.atlas-games.com/atlas-cms/resources/downloads/ars-magica-5th-edition-creature-index-v3.xls) |
-| Index et Bases de Données (Moteur Logique) | Grand Grimoire of Hermetic Spells (PDF) | [https://www.atlas-games.com/atlas-cms/resources/downloads/arm5-grand-grimoire-of-hermetic-spells.pdf](https://www.atlas-games.com/atlas-cms/resources/downloads/arm5-grand-grimoire-of-hermetic-spells.pdf) |
-| Index et Bases de Données (Moteur Logique) | ArM5 Unified Virtues and Flaws Index (PDF) | [http://www.atlas-games.com/pdf_storage/ArM5VFIndex.pdf](http://www.atlas-games.com/pdf_storage/ArM5VFIndex.pdf) |
-| Index et Bases de Données (Moteur Logique) | ArM5 Books By Ability Index (PDF) | [http://www.atlas-games.com/pdf_storage/ArM5BooksByAbilityIndex.pdf](http://www.atlas-games.com/pdf_storage/ArM5BooksByAbilityIndex.pdf) |
-| Index et Bases de Données (Moteur Logique) | Forgotten Magic of Hermes (PDF) | [https://atlas-games.com/pdf_storage/ArMForgottenMagicofHermes.pdf](https://atlas-games.com/pdf_storage/ArMForgottenMagicofHermes.pdf) |
-| Aides de Jeu et Mécaniques de Simulation | ArM5 Mundane Beasts (PDF) | [http://www.atlas-games.com/pdf_storage/ArM5Beasts.pdf](http://www.atlas-games.com/pdf_storage/ArM5Beasts.pdf) |
-| Aides de Jeu et Mécaniques de Simulation | ArM5 Formulae Review (PDF) | [https://atlas-games.com/atlas-cms/resources/downloads/arm5formulae.pdf](https://atlas-games.com/atlas-cms/resources/downloads/arm5formulae.pdf) |
-| Aides de Jeu et Mécaniques de Simulation | ArM5 Complex Debate Rules (Archive ZIP) | [https://atlas-games.com/atlas-cms/resources/downloads/arm5-complex-debate-rules.zip](https://atlas-games.com/atlas-cms/resources/downloads/arm5-complex-debate-rules.zip) |
-| Fiches de Suivi et Gestion d'État | ArM5 Character Sheet French (PDF) | [http://www.atlas-games.com/pdf_storage/arm5frenchchar.pdf](http://www.atlas-games.com/pdf_storage/arm5frenchchar.pdf) |
-| Entraînement Narratif (Scénarios) | Promises, Promises - Version Française (PDF) | [https://www.atlas-games.com/pdf_storage/promises_french.pdf](https://www.atlas-games.com/pdf_storage/promises_french.pdf) |
-| Entraînement Narratif (Scénarios) | Promises, Promises - Version Originale (PDF) | [https://www.atlas-games.com/pdf_storage/promises.pdf](https://www.atlas-games.com/pdf_storage/promises.pdf) |
-| Entraînement Narratif (Scénarios) | Nigrasaxa (PDF) | [https://www.atlas-games.com/pdf_storage/nigrasaxa.pdf](https://www.atlas-games.com/pdf_storage/nigrasaxa.pdf) |
+| Catégorie de donnée | Source | Lien de téléchargement | Chemin local (./resources/) |
+| --- | --- | --- | --- |
+| Corpus Textuel Brut | Dépôt GitHub Markdown | [Lien](https://github.com/OriginalMadman/Ars-Magica-Open-License) | `Ars-Magica-Open-License/` |
+| Index & Bases | ArM5 Creature Index (Excel) | [Lien](https://www.atlas-games.com/atlas-cms/resources/downloads/ars-magica-5th-edition-creature-index-v3.xls) | `ars-magica-5th-edition-creature-index-v3.xls` |
+| Index & Bases | Grand Grimoire (PDF) | [Lien](https://www.atlas-games.com/atlas-cms/resources/downloads/arm5-grand-grimoire-of-hermetic-spells.pdf) | `arm5-grand-grimoire-of-hermetic-spells.pdf` |
+| Index & Bases | Unified Virtues/Flaws | [Lien](http://www.atlas-games.com/pdf_storage/ArM5VFIndex.pdf) | `ArM5VFIndex.pdf` |
+| Index & Bases | Books By Ability | [Lien](http://www.atlas-games.com/pdf_storage/ArM5BooksByAbilityIndex.pdf) | `ArM5BooksByAbilityIndex.pdf` |
+| Index & Bases | Forgotten Magic | [Lien](https://atlas-games.com/pdf_storage/ArMForgottenMagicofHermes.pdf) | `ArMForgottenMagicofHermes.pdf` |
+| Simulation | Mundane Beasts | [Lien](http://www.atlas-games.com/pdf_storage/ArM5Beasts.pdf) | `ArM5Beasts.pdf` |
+| Simulation | Formulae Review | [Lien](https://atlas-games.com/atlas-cms/resources/downloads/arm5formulae.pdf) | `arm5formulae.pdf` |
+| Simulation | Complex Debate Rules | [Lien](https://atlas-games.com/atlas-cms/resources/downloads/arm5-complex-debate-rules.zip) | `arm5-complex-debate-rules.zip` |
+| Fiches | Character Sheet FR | [Lien](http://www.atlas-games.com/pdf_storage/arm5frenchchar.pdf) | `arm5frenchchar.pdf` |
+| Scénarios | Promises, Promises FR | [Lien](https://www.atlas-games.com/pdf_storage/promises_french.pdf) | `promises_french.pdf` |
+| Scénarios | Promises, Promises VO | [Lien](https://www.atlas-games.com/pdf_storage/promises.pdf) | `promises.pdf` |
+| Scénarios | Nigrasaxa | [Lien](https://www.atlas-games.com/pdf_storage/nigrasaxa.pdf) | `nigrasaxa.pdf` |

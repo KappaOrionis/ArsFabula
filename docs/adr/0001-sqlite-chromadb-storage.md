@@ -1,93 +1,69 @@
-# ADR-0001: SQLite + ChromaDB as Dual Storage Strategy
+# ADR-0001: SQLite and ChromaDB Storage Strategy
 
 ## Status
 
 Accepted
 
-## Date
-
-2026-05-15
-
 ## Context
 
-ArsFabula has two distinct data access patterns:
-
-1. **Structured relational data** — Covenants, Characters, Seasons, Spells. Require ACID transactions and precise SQL filtering.
-2. **Unstructured lore data** — OpenArs rulebook content queried via natural language. Requires semantic similarity search.
-
-The system must operate **100% offline**, embedded in the Tauri binary bundle.
+ArsFabula requires a local-first storage solution to manage:
+1.  **Structured Data**: Covenant stats, character sheets, seasonal logs, and inventory (relational).
+2.  **Unstructured Lore**: Rulebook text, spell descriptions, and historical context for the AI narrator (vector).
+3.  **Local-First Requirement**: The application must work entirely offline without external cloud databases.
 
 ## Decision Drivers
 
-- Must be fully offline — no cloud DBs, no external vector service
-- Must support ACID transactions for seasonal progression
-- Must support semantic NL queries for the Codex lore chatbot
-- Must be embedded — no user-managed DB server
-- Strong Rust bindings required for the Tauri backend
+- **Performance**: Fast retrieval of character stats and lore chunks.
+- **Portability**: Easy to back up and move campaign data.
+- **Developer Experience**: Robust tooling for schema migrations and vector search.
+- **Language**: English for schema/internal data, French for narrative content.
 
 ## Considered Options
 
-### Option A: SQLite + ChromaDB ✅ Selected
+### Option 1: Pure JSON Files
+- **Pros**: Zero overhead, human-readable.
+- **Cons**: Poor query performance for large datasets, lack of relational integrity, no vector search support.
 
-**SQLite**: Embedded, zero-config, ACID-compliant, excellent Rust support via `sqlx` (compile-time query checking).
+### Option 2: SQLite Only
+- **Pros**: ACID compliant, relational integrity, single file, extremely mature.
+- **Cons**: No native vector search for RAG (requires extensions like `sqlite-vss` which can be tricky to distribute).
 
-**ChromaDB**: Embedded vector store with disk persistence, metadata filtering, native LangChain integration.
-
-**Con**: Two storage systems; ChromaDB needs Python runtime if used as sidecar.
-
-### Option B: SQLite + FTS5 only
-
-**Rejected**: FTS5 keyword search cannot replace embedding-based semantic retrieval for natural-language lore queries.
-
-### Option C: FAISS + SQLite
-
-**Rejected**: FAISS has no built-in metadata filtering or persistence management. ChromaDB is strictly better DX.
-
-### Option D: DuckDB + Qdrant
-
-**Rejected**: Overkill. DuckDB is OLAP-optimized (poor for transactional writes). Qdrant requires a running service.
+### Option 3: SQLite + ChromaDB (Dual Storage)
+- **Pros**: Best of both worlds. SQLite for relational logic; ChromaDB for semantic lore retrieval.
+- **Cons**: Two storage engines to manage and keep in sync.
 
 ## Decision
 
-- **SQLite** (via `sqlx`) for all relational/transactional data
-- **ChromaDB** (persisted to `./data/chroma_db`) for lore embeddings
+We will use **SQLite** as the primary relational database and **ChromaDB** as the vector store.
 
-```
-data/
-├── arsfabula.db        # SQLite — Covenants, Characters, Seasons
-└── chroma_db/          # ChromaDB (gitignored)
-    ├── arsfabula_lore/  # OpenArs rulebook embeddings
-    └── arsfabula_saga/  # Campaign narrative history
-```
+## Rationale
 
-**SQLite config**: WAL mode, UUID TEXT IDs, `sqlx::query!()` macros for compile-time verification.
-
-**ChromaDB config**: Embedded, `nomic-embed-text` via Ollama (768-dim), two collections.
+- **SQLite** is the industry standard for local desktop storage. Its integration with Rust via `sqlx` provides compile-time query checking.
+- **ChromaDB** provides a high-level API for vector search that is easy to integrate with Python/Rust sidecars and supports persistence to a local directory (`./data/chroma_db`).
+- This separation allows the AI narrator to perform semantic searches in the "Lore" while the application logic handles "Facts" in the relational DB.
 
 ## Consequences
 
 ### Positive
-- SQLite `.db` file is trivially portable and backup-friendly
-- `sqlx` compile-time checking eliminates runtime SQL errors
-- ChromaDB persistence survives restarts without re-indexing
-- Both stores work fully offline
+- Robust campaign management with transactional safety.
+- Powerful RAG capabilities for the AI Storyguide.
+- 100% offline and private data.
 
 ### Negative
-- Two storage systems increase cognitive overhead
-- ChromaDB initial indexing requires Python sidecar or Rust ChromaDB client
+- Increased complexity in the ingestion pipeline (must populate two databases).
+- Higher disk space usage compared to pure text.
 
 ### Risks
+- Syncing character data changes into the vector store (if characters become part of the lore).
+- Mitigation: Character data stays in SQLite; only static lore and finished seasonal logs are indexed in ChromaDB.
 
-| Risk | Mitigation |
-|---|---|
-| Embedding model change causes semantic drift | Store `embedding_model` in collection metadata; validate on startup |
-| SQLite write contention during season processing | WAL mode + `sqlx::SqlitePool` |
+## Implementation Notes
+
+- SQLite migrations managed via `sqlx-cli`.
+- ChromaDB persistence pointed to `./data/chroma_db`.
+- Internal logic always uses UUIDs for cross-database references.
 
 ## Related Decisions
 
-- ADR-0002: Local-Only AI Inference via Ollama — defines the embedding model used by ChromaDB
-
-## References
-
-- [SQLx](https://github.com/launchbadge/sqlx), [ChromaDB Docs](https://docs.trychroma.com/), [SQLite WAL](https://www.sqlite.org/wal.html)
-- ArsFabula PRD §2 (Stack) and §4 (Data Model)
+- ADR-0004: Heterogeneous Data Ingestion
+- ADR-0003: Local AI Inference using LM Studio

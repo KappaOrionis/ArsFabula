@@ -1,0 +1,28 @@
+# Dependency & Build
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Project specific
+data/
+config/ai.toml
+python/__pycache__/
+python/venv/
+.env
+
+# Tauri / Rust
+src-tauri/target/
+src-tauri/Cargo.lock
+src-tauri/db.sqlite*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

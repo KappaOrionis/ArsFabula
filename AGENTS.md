@@ -11,6 +11,8 @@ and narrative history through an AI-assisted interface.
 
 **Stack**: Tauri (desktop shell) + React (frontend) + Rust/Python (backend) + SQLite (data) + ChromaDB/FAISS (RAG lore)
 
+**Knowledge Base**: The system ingests official *Ars Magica 5e* sources (Markdown rules, Excel creature indices, PDF grimoires) as listed in `SOURCES.md`. These are processed into a structured logic engine (SQLite) and a semantic lore engine (ChromaDB).
+
 ## Critical Language Rules
 
 | Context | Language |

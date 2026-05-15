@@ -411,3 +411,23 @@ src-tauri/migrations/
 
 Each migration is **append-only**: never modify an existing migration file.
 Use `cargo sqlx migrate run` to apply.
+
+---
+
+## 7. Official Data Sources Mapping
+
+The schema is designed to ingest and normalize data from the following official sources (see `SOURCES.md`):
+
+| Internal Table | Primary Source | Extraction Notes |
+| --- | --- | --- |
+| `spells` | Grand Grimoire of Hermetic Spells (PDF) | Requires table extraction for technique, form, and level. |
+| `creatures`* | ArM5 Creature Index (Excel) | Maps to a future `creatures` table (see Roadmap). |
+| `virtues_flaws`* | Unified Virtues and Flaws Index (PDF) | Requires PDF table parsing. |
+| `library_books` | Books By Ability Index (PDF) | Used to seed "Summae" and "Tractatus" options. |
+| `rules_lore` | GitHub Markdown Repository | Chunked into ChromaDB `arsfabula_lore`. |
+
+*\*Table in planning phase.*
+
+---
+
+## 8. Migration File Naming Convention

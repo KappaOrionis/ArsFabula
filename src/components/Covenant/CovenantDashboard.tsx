@@ -10,7 +10,17 @@ interface Covenant {
   tribunal: string;
   founding_year: number;
   is_official: boolean;
+  description: string | null;
   domus_magna: string | null;
+  season_status: string | null;
+  location_desc: string | null;
+  gps_coords: string | null;
+  notable_magi: string | null;
+  custodes: string | null;
+  grogs_desc: string | null;
+  vis_sources: string | null;
+  laboratories: string | null;
+  library: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -458,6 +468,116 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
 
       <div className="px-10 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {!forceTab && selectedCov && (
+            <div className="col-span-full bg-surface p-10 rounded-[2rem] border border-outline-variant/50 alchemical-border shadow-xl mb-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-outline-variant/30">
+                <div>
+                  <span className="font-label-sm text-secondary tracking-widest uppercase">Recensement Hermétique</span>
+                  <h3 className="font-headline-lg text-on-surface mt-1">Archives & Spécifications</h3>
+                </div>
+                {selectedCov.gps_coords && (
+                  <div className="flex items-center gap-2 bg-surface-container px-4 py-2 rounded-xl border border-outline-variant/30">
+                    <span className="material-symbols-outlined text-secondary text-sm">explore</span>
+                    <span className="font-label-sm font-mono text-on-surface-variant">{selectedCov.gps_coords}</span>
+                  </div>
+                )}
+              </div>
+
+              {selectedCov.description && (
+                <div className="mb-8 p-6 bg-surface-container/50 rounded-2xl border-l-2 border-primary italic font-body-lg text-on-surface-variant leading-relaxed">
+                  "{selectedCov.description}"
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+                {selectedCov.location_desc && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="material-symbols-outlined text-sm">landscape</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Emplacement</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.location_desc}</p>
+                  </div>
+                )}
+                {selectedCov.season_status && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-secondary">
+                      <span className="material-symbols-outlined text-sm">change_history</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Saison Hermétique</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.season_status}</p>
+                  </div>
+                )}
+                {selectedCov.domus_magna && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="material-symbols-outlined text-sm">workspace_premium</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Statut Domiciliaire</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.domus_magna}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-outline-variant/20">
+                {selectedCov.notable_magi && (
+                  <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/20 space-y-3">
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="material-symbols-outlined text-sm">bolt</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Mages Notables</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.notable_magi}</p>
+                  </div>
+                )}
+                {selectedCov.custodes && (
+                  <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/20 space-y-3">
+                    <div className="flex items-center gap-2 text-secondary">
+                      <span className="material-symbols-outlined text-sm">shield</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Custodes & Érudits</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.custodes}</p>
+                  </div>
+                )}
+                {selectedCov.grogs_desc && (
+                  <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/20 space-y-3">
+                    <div className="flex items-center gap-2 text-on-surface-variant">
+                      <span className="material-symbols-outlined text-sm">military_tech</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Garnison & Grogs</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.grogs_desc}</p>
+                  </div>
+                )}
+                {selectedCov.vis_sources && (
+                  <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/20 space-y-3">
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="material-symbols-outlined text-sm">diamond</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Sources de Vis</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.vis_sources}</p>
+                  </div>
+                )}
+                {selectedCov.laboratories && (
+                  <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/20 space-y-3">
+                    <div className="flex items-center gap-2 text-secondary">
+                      <span className="material-symbols-outlined text-sm">experiment</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Laboratoires</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.laboratories}</p>
+                  </div>
+                )}
+                {selectedCov.library && (
+                  <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/20 space-y-3">
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="material-symbols-outlined text-sm">auto_stories</span>
+                      <h4 className="font-label-md uppercase tracking-wider">Bibliothèque</h4>
+                    </div>
+                    <p className="font-body-md text-on-surface-variant leading-relaxed">{selectedCov.library}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {!forceTab && (
             <div className="space-y-10">
               <div className="bg-surface p-8 rounded-3xl border border-outline-variant/30 shadow-sm manuscript-border">

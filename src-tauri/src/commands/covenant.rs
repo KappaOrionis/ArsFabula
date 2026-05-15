@@ -7,7 +7,7 @@ use uuid::Uuid;
 #[command]
 pub async fn list_covenants(pool: State<'_, SqlitePool>) -> Result<Vec<Covenant>, String> {
     let covenants = sqlx::query_as::<_, Covenant>(
-        "SELECT id, name, aura_type, aura_level, founding_year, location_id, tribunal, size, description, is_official, domus_magna, created_at, updated_at FROM covenants ORDER BY name ASC"
+        "SELECT * FROM covenants ORDER BY name ASC"
     )    .fetch_all(&*pool)
         .await
         .map_err(|e| e.to_string())?;
@@ -36,7 +36,7 @@ pub async fn create_covenant(
     let id = Uuid::new_v4().to_string();
     
     sqlx::query(
-        "INSERT INTO covenants (id, name, aura_type, aura_level, founding_year, tribunal, is_official, domus_magna) VALUES (?, ?, ?, ?, ?, ?, 0, NULL)"
+        "INSERT INTO covenants (id, name, aura_type, aura_level, founding_year, tribunal, is_official, domus_magna, season_status, location_desc, gps_coords, notable_magi, custodes, grogs_desc, vis_sources, laboratories, library) VALUES (?, ?, ?, ?, ?, ?, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)"
     )
     .bind(&id)
     .bind(name)

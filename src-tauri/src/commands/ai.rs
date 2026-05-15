@@ -143,13 +143,11 @@ pub async fn list_source_files() -> Result<Vec<String>, String> {
     let mut files = Vec::new();
     let entries = std::fs::read_dir(sources_dir).map_err(|e| e.to_string())?;
     
-    for entry in entries {
-        if let Ok(entry) = entry {
-            let path = entry.path();
-            if path.is_file() && path.extension().map_or(false, |ext| ext == "md") {
-                if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
-                    files.push(name.to_string());
-                }
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_file() && path.extension().is_some_and(|ext| ext == "md") {
+            if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
+                files.push(name.to_string());
             }
         }
     }

@@ -40,3 +40,19 @@ pub struct Covenant {
     pub size: String,
     pub description: Option<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct Spell {
+    pub id: String,
+    pub character_id: Option<String>,
+    pub name: String,
+    pub technique: String,
+    pub form: String,
+    pub level: i32,
+    pub mastery_score: i32,
+    pub range_param: String,
+    pub duration_param: String,
+    pub target_param: String,
+    pub description: Option<String>,
+    pub openars_page: Option<String>,
+}

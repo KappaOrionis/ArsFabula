@@ -51,24 +51,46 @@ pub async fn check_ai_status() -> Result<AIStatus, String> {
 }
 #[command]
 pub async fn search_lore(query: String, filter_type: Option<String>) -> Result<Vec<LoreEntry>, String> {
-    let python_path = "python/venv/Scripts/python.exe";
-    let script_path = "python/api/query_lore.py";
+    let current_dir = std::env::current_dir().map_err(|e| e.to_string())?;
+    
+    // In dev mode, we are usually in the project root or src-tauri
+    // Let's try to find the python venv relative to the current dir
+    let mut python_path = current_dir.join("python").join("venv").join("Scripts").join("python.exe");
+    if !python_path.exists() {
+        // Try one level up if we are in src-tauri
+        python_path = current_dir.parent().unwrap().join("python").join("venv").join("Scripts").join("python.exe");
+    }
+
+    let mut script_path = current_dir.join("python").join("api").join("query_lore.py");
+    if !script_path.exists() {
+        script_path = current_dir.parent().unwrap().join("python").join("api").join("query_lore.py");
+    }
+
+    if !python_path.exists() {
+        return Err(format!("Python venv not found at {:?}. Current dir: {:?}", python_path, current_dir));
+    }
 
     let mut cmd = std::process::Command::new(python_path);
     cmd.arg(script_path).arg(&query);
 
     if let Some(f) = filter_type {
-        cmd.arg(f);
+        if f != "null" && !f.is_empty() {
+            cmd.arg(f);
+        }
     }
 
-    let output = cmd.output().map_err(|e| e.to_string())?;
+    let output = cmd.output().map_err(|e| format!("Failed to execute Python: {}", e))?;
 
     if !output.status.success() {
-        return Err(String::from_utf8_lossy(&output.stderr).to_string());
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("Python script failed: {}", stderr));
     }
 
     let results: Vec<LoreEntry> = serde_json::from_slice(&output.stdout)
-        .map_err(|e| format!("Failed to parse Python output: {}. Raw: {}", e, String::from_utf8_lossy(&output.stdout)))?;
+        .map_err(|e| {
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            format!("Failed to parse Python output: {}. Raw output: {}", e, stdout)
+        })?;
 
     Ok(results)
 }

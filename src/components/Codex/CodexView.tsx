@@ -15,15 +15,19 @@ const CodexView: React.FC = () => {
   const [results, setResults] = useState<LoreEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async () => {
     if (!query.trim()) return;
     setLoading(true);
+    setError(null);
     try {
-      const data: LoreEntry[] = await invoke('search_lore', { query, filterType: activeFilter });
+      const data: LoreEntry[] = await invoke('search_lore', { query, filter_type: activeFilter });
       setResults(data);
-    } catch (error) {
-      console.error('Search failed:', error);
+    } catch (err: any) {
+      console.error('Search failed:', err);
+      setError(err.toString());
+      setResults([]);
     } finally {
       setLoading(false);
     }
@@ -47,18 +51,27 @@ const CodexView: React.FC = () => {
           Codex Hermeticus
         </h1>
         
-        <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', top: '50%', left: '1.25rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-            <Search size={20} color="var(--text-muted)" />
+        <div className="flex gap-2">
+          <div style={{ position: 'relative', flex: 1 }}>
+            <div style={{ position: 'absolute', top: '50%', left: '1.25rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+              <Search size={20} color="var(--text-muted)" />
+            </div>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Rechercher un sort, une créature ou une règle..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            />
           </div>
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Rechercher un sort, une créature ou une règle..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          />
+          <button 
+            onClick={handleSearch}
+            className="sidebar-btn active"
+            style={{ width: 'auto', padding: '0 1.5rem', borderRadius: '1rem' }}
+          >
+            Rechercher
+          </button>
         </div>
 
         {/* Filters */}
@@ -87,6 +100,14 @@ const CodexView: React.FC = () => {
         {loading ? (
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin" style={{ width: '40px', height: '40px', border: '3px solid var(--glass-border)', borderTopColor: 'var(--blue-500)', borderRadius: '50%' }}></div>
+          </div>
+        ) : error ? (
+          <div className="text-center py-20 px-10">
+            <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 text-red-500">
+              <X size={24} />
+            </div>
+            <p className="text-red-400 font-medium mb-2">Erreur de recherche</p>
+            <p className="text-muted text-sm max-w-md mx-auto">{error}</p>
           </div>
         ) : results.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ paddingBottom: '40px' }}>

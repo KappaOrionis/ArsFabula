@@ -4,7 +4,7 @@ import { BrainStatus } from "./components/BrainStatus";
 import CodexView from "./components/Codex/CodexView";
 import CharacterList from "./components/Characters/CharacterList";
 import MapView from "./components/Map/MapView";
-import { LayoutDashboard, BookOpen, Users, Settings, Info } from "lucide-react";
+import { LayoutDashboard, BookOpen, Users, Settings, Info, Map as MapIcon } from "lucide-react";
 import "./App.css";
 
 type Tab = 'dashboard' | 'codex' | 'characters' | 'map';
@@ -12,11 +12,12 @@ type Tab = 'dashboard' | 'codex' | 'characters' | 'map';
 function App() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
     <div className="flex h-screen bg-slate-950 text-slate-100 overflow-hidden font-sans">
       {/* Sidebar */}
-      <nav className="w-20 md:w-72 bg-slate-900 border-r border-slate-800 flex flex-col p-4">
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 md:w-80 sidebar border-r border-white/5 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 overflow-y-auto`}>
         <div className="mb-10 px-2 py-4">
           <h2 className="text-xl font-black tracking-tighter bg-gradient-to-br from-white to-slate-500 bg-clip-text text-transparent hidden md:block">
             ArsFabula
@@ -53,7 +54,7 @@ function App() {
             onClick={() => setActiveTab('map')}
             className={`sidebar-btn ${activeTab === 'map' ? 'active' : ''}`}
           >
-            <LayoutDashboard className="w-5 h-5" style={{ transform: 'rotate(45deg)' }} />
+            <MapIcon className="w-5 h-5" />
             <span className="font-medium hidden md:block">Cartographie</span>
           </button>
         </div>
@@ -64,7 +65,7 @@ function App() {
             <span className="font-medium hidden md:block">Paramètres</span>
           </button>
         </div>
-      </nav>
+      </aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col relative overflow-hidden">
@@ -87,16 +88,21 @@ function App() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-6xl mb-16">
               {/* Main Actions */}
-              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div onClick={() => setActiveTab('characters')} className="p-8 bg-slate-900/50 border border-slate-800 rounded-3xl text-left hover:border-slate-700 transition-all cursor-pointer group hover:bg-slate-900">
                   <Users className="w-10 h-10 text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3">Membres de l'Alliance</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">Gérez vos mages, compagnons et grogs. Suivez leurs statistiques et leur progression narrative.</p>
+                  <h3 className="text-xl font-bold mb-3">Alliances</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">Gérez vos mages et votre Covenant.</p>
                 </div>
                 <div onClick={() => setActiveTab('codex')} className="p-8 bg-slate-900/50 border border-slate-800 rounded-3xl text-left hover:border-slate-700 transition-all cursor-pointer group hover:bg-slate-900">
                   <BookOpen className="w-10 h-10 text-emerald-500 mb-6 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3">Codex Hermeticus</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">Consultez l'encyclopédie des règles, sortilèges et créatures du monde mythique.</p>
+                  <h3 className="text-xl font-bold mb-3">Codex</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">Consultez les règles et sortilèges.</p>
+                </div>
+                <div onClick={() => setActiveTab('map')} className="p-8 bg-slate-900/50 border border-slate-800 rounded-3xl text-left hover:border-slate-700 transition-all cursor-pointer group hover:bg-slate-900">
+                  <LayoutDashboard className="w-10 h-10 text-purple-500 mb-6 group-hover:scale-110 transition-transform" style={{ transform: 'rotate(45deg)' }} />
+                  <h3 className="text-xl font-bold mb-3">Cartographie</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">Explorez l'Europe de 1220.</p>
                 </div>
               </div>
 

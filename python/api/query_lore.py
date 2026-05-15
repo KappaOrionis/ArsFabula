@@ -14,7 +14,22 @@ except ImportError:
     sys.exit(1)
 
 def search(query, filter_type=None, limit=10):
-    config = AppConfig.load()
+    # Fix: Find config relative to project root (2 levels up from python/api)
+    root_dir = Path(__file__).parent.parent.parent
+    config_path = root_dir / "config" / "ai.toml"
+    
+    if not config_path.exists():
+        # Try local path as fallback
+        config_path = Path("config/ai.toml")
+
+    config = AppConfig.load(str(config_path))
+    
+    # Fix: Resolve relative db_path to project root
+    if config.rag.db_path.startswith("./"):
+        config.rag.db_path = str(root_dir / config.rag.db_path[2:])
+    elif not os.path.isabs(config.rag.db_path):
+        config.rag.db_path = str(root_dir / config.rag.db_path)
+
     client = get_chroma_client(config)
     collection = get_lore_collection(client)
     

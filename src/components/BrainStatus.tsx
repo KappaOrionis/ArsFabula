@@ -67,11 +67,6 @@ export const BrainStatus = () => {
         )}
       </div>
 
-      {status.is_connected && status.model_name && (
-        <div className="mt-3 text-xs text-muted">
-          <strong className="text-primary">{t('brain.status.model')}:</strong> {status.model_name}
-        </div>
-      )}
 
       {status.error && !status.is_connected && (
         <div className="mt-3 text-xs text-danger opacity-80 italic">

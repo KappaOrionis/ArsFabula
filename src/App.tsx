@@ -5,6 +5,8 @@ import CodexView from "./components/Codex/CodexView";
 import CharacterList from "./components/Characters/CharacterList";
 import MapView from "./components/Map/MapView";
 import { LayoutDashboard, BookOpen, Users, Settings, Info, Map as MapIcon } from "lucide-react";
+import logo from "./assets/logo.png";
+import icon from "./assets/icon.png";
 import "./App.css";
 
 type Tab = 'dashboard' | 'codex' | 'characters' | 'map';
@@ -18,11 +20,9 @@ function App() {
     <div className="flex h-screen bg-slate-950 text-slate-100 overflow-hidden font-sans">
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 md:w-80 sidebar border-r border-white/5 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 overflow-y-auto`}>
-        <div className="mb-10 px-2 py-4">
-          <h2 className="text-xl font-black tracking-tighter bg-gradient-to-br from-white to-slate-500 bg-clip-text text-transparent hidden md:block">
-            ArsFabula
-          </h2>
-          <div className="w-8 h-8 bg-blue-600 rounded-lg md:hidden mx-auto" />
+        <div className="mb-12 px-6 py-8">
+          <img src={logo} alt="Ars Fabula" className="w-full h-auto max-w-[180px]" />
+          <div className="h-px w-12 bg-accent mt-6 opacity-30" />
         </div>
 
         <div className="flex-1 flex flex-col gap-2">
@@ -73,77 +73,111 @@ function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col relative overflow-hidden">
+      <main className="flex-1 flex flex-col relative overflow-hidden main-content">
         {activeTab === 'dashboard' && (
           <div className="flex-1 flex flex-col items-center p-10 overflow-y-auto custom-scrollbar">
-             <header className="text-center mb-16 mt-10">
-              <div className="mb-6 flex justify-center">
-                <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center backdrop-blur-xl relative overflow-hidden group">
-                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                   <LayoutDashboard className="w-12 h-12 text-blue-400" />
-                </div>
-              </div>
-              <h1 className="text-6xl font-black tracking-tighter bg-gradient-to-r from-blue-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent mb-4">
+             <header className="text-center mb-20 mt-16 max-w-4xl">
+              <h1 className="text-8xl font-header mb-6 leading-tight">
                 {t('app.title')}
               </h1>
-              <p className="text-slate-400 text-xl max-w-2xl mx-auto">
+              <p className="text-primary text-3xl font-header italic opacity-90 mb-12">
                 {t('app.subtitle')}
               </p>
-            </header>
+              
+              <div className="text-left font-body text-lg leading-relaxed text-text-muted space-y-6 px-8 border-l-2 border-accent/20 mb-20">
+                <p>
+                  Bienvenue dans l'Europe Mythique de l'an 1220. Un monde où les peurs des paysans sont réelles, où les fées hantent les forêts profondes et où les anges et les démons luttent pour l'âme de l'humanité. Mais au-dessus de ce tumulte médiéval s'élève l'Ordre d'Hermès, une société secrète de mages liés par le Code de l'Honnêteté et unis par la quête de la connaissance arcane.
+                </p>
+                <p>
+                  En tant que membre d'une Alliance — une communauté de mages et de leurs serviteurs — vous résidez dans des lieux de pouvoir appelés <i>Aurae</i>. Ici, loin des yeux inquisiteurs de l'Église et de la Noblesse, vous menez des recherches qui s'étendent sur des décennies. Vous étudiez les quinze Arts de la Magie, manipulant les formes de l'Ignem (le feu), de l'Animal (les bêtes) ou du Mentem (l'esprit) pour plier la réalité à votre volonté.
+                </p>
+                <p>
+                  Ars Magica n'est pas seulement un jeu de sorts et de batailles. C'est une chronique de passage du temps. C'est l'histoire de la montée et de la chute des Alliances, de la politique complexe entre les maisons de l'Ordre, et de la lutte constante pour préserver votre magie alors que le monde se rationalise et que le Divin étend son emprise. Vos mages vieilliront, vos apprentis deviendront des maîtres, et chaque décision laissera une trace indélébile dans les archives de votre Scriptorium.
+                </p>
+                <p>
+                  <strong>ArsFabula</strong> a été conçu comme votre compagnon hermétique ultime. Il ne se contente pas de stocker des données ; il devient votre Grimoire Vivant, un réceptacle pour la sagesse de votre Alliance et un outil pour naviguer dans les méandres de l'Europe Mythique.
+                </p>
+              </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-6xl mb-16">
-              {/* Main Actions */}
-              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div onClick={() => setActiveTab('characters')} className="p-8 bg-slate-900/50 border border-slate-800 rounded-3xl text-left hover:border-slate-700 transition-all cursor-pointer group hover:bg-slate-900">
-                  <Users className="w-10 h-10 text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3">Alliances</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">Gérez vos mages et votre Covenant.</p>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 w-full text-left mb-20 px-4">
+                <div className="space-y-2">
+                  <h4 className="font-header text-primary text-xl">L'Archive Lore</h4>
+                  <p className="text-xs font-label uppercase tracking-widest text-text-muted opacity-60">RAG Intégré</p>
+                  <p className="text-sm font-body">Accédez instantanément aux règles et aux traditions de l'Ordre via notre moteur de recherche sémantique local.</p>
                 </div>
-                <div onClick={() => setActiveTab('codex')} className="p-8 bg-slate-900/50 border border-slate-800 rounded-3xl text-left hover:border-slate-700 transition-all cursor-pointer group hover:bg-slate-900">
-                  <BookOpen className="w-10 h-10 text-emerald-500 mb-6 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-bold mb-3">Codex</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">Consultez les règles et sortilèges.</p>
+                <div className="space-y-2">
+                  <h4 className="font-header text-primary text-xl">Le Sigillum</h4>
+                  <p className="text-xs font-label uppercase tracking-widest text-text-muted opacity-60">Gestion d'Alliance</p>
+                  <p className="text-sm font-body">Suivez l'évolution de vos mages, de vos ressources de Vis et la croissance séculaire de votre Covenant.</p>
                 </div>
-                <div onClick={() => setActiveTab('map')} className="p-8 bg-slate-900/50 border border-slate-800 rounded-3xl text-left hover:border-slate-700 transition-all cursor-pointer group hover:bg-slate-900">
-                  <LayoutDashboard className="w-10 h-10 text-purple-500 mb-6 group-hover:scale-110 transition-transform" style={{ transform: 'rotate(45deg)' }} />
-                  <h3 className="text-xl font-bold mb-3">Cartographie</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">Explorez l'Europe de 1220.</p>
+                <div className="space-y-2">
+                  <h4 className="font-header text-primary text-xl">L'Atlas Mythique</h4>
+                  <p className="text-xs font-label uppercase tracking-widest text-text-muted opacity-60">Cartographie</p>
+                  <p className="text-sm font-body">Visualisez votre influence sur l'Europe et découvrez les Regiones cachées grâce à notre carte interactive.</p>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-header text-primary text-xl">Le Laboratoire</h4>
+                  <p className="text-xs font-label uppercase tracking-widest text-text-muted opacity-60">IA Narrative</p>
+                  <p className="text-sm font-body">Générez des conséquences narratives, des rumeurs et des événements de saison assistés par l'intelligence hermétique.</p>
                 </div>
               </div>
 
-              {/* Status Sidebar */}
-              <div className="flex flex-col gap-4">
-                <div className="p-6 bg-blue-500/5 border border-blue-500/10 rounded-3xl">
-                  <h4 className="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <Info size={14} /> Tips
-                  </h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Utilisez le Codex pour vérifier les portées de sorts pendant les sessions. L'IA peut vous aider à générer des conséquences narratives.
-                  </p>
+              <div className="mt-8 flex justify-center">
+                <div className="h-px w-48 bg-accent opacity-30" />
+              </div>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-5xl mb-20">
+              <div 
+                onClick={() => setActiveTab('map')} 
+                className="codex-card flex flex-col items-center text-center cursor-pointer group"
+              >
+                <div className="w-20 h-20 mb-8 rounded-full border-2 border-accent/20 flex items-center justify-center group-hover:border-accent/60 transition-all duration-500">
+                  <MapIcon className="w-10 h-10 text-primary group-hover:scale-110 transition-transform" />
+                </div>
+                <h3 className="text-3xl font-header mb-4 text-text-main group-hover:text-primary transition-colors">
+                  Cartographie
+                </h3>
+                <p className="text-text-muted font-body leading-relaxed max-w-xs">
+                  Explorez les frontières de l'Europe Mythique et les domaines de l'Ordre d'Hermès.
+                </p>
+                <div className="mt-8 text-xs font-label uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                  Ouvrir l'Atlas &rarr;
+                </div>
+              </div>
+
+              <div 
+                onClick={() => setActiveTab('codex')} 
+                className="codex-card flex flex-col items-center text-center cursor-pointer group"
+              >
+                <div className="w-20 h-20 mb-8 rounded-full border-2 border-accent/20 flex items-center justify-center group-hover:border-accent/60 transition-all duration-500">
+                  <BookOpen className="w-10 h-10 text-primary group-hover:scale-110 transition-transform" />
+                </div>
+                <h3 className="text-3xl font-header mb-4 text-text-main group-hover:text-primary transition-colors">
+                  Codex Hermeticus
+                </h3>
+                <p className="text-text-muted font-body leading-relaxed max-w-xs">
+                  Consultez les archives interdites, les sortilèges et les chroniques de votre Alliance.
+                </p>
+                <div className="mt-8 text-xs font-label uppercase tracking-widest text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                  Consulter les Archives &rarr;
                 </div>
               </div>
             </div>
 
-            {/* Quick Start Guide */}
-            <section className="w-full max-w-6xl mb-20">
-              <h2 className="text-2xl font-bold mb-8 text-center">{t('app.guide.title')}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[1, 2, 3].map((step) => (
-                  <div key={step} className="p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl">
-                    <h3 className="text-lg font-bold mb-2 text-slate-200">{t(`app.guide.step${step}.title`)}</h3>
-                    <p className="text-sm text-slate-500">{t(`app.guide.step${step}.desc`)}</p>
-                  </div>
-                ))}
+            {/* Quick Actions Footer */}
+            <div className="flex gap-12 items-center text-text-muted font-label text-sm uppercase tracking-widest opacity-60">
+              <div 
+                onClick={() => setActiveTab('characters')}
+                className="cursor-pointer hover:text-primary transition-colors flex items-center gap-2"
+              >
+                <Users size={16} /> Alliances
               </div>
-            </section>
-
-            {/* Footer / Legal */}
-            <footer className="w-full max-w-4xl border-t border-slate-800/50 pt-10 pb-20 text-center">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">{t('app.legal.title')}</h4>
-              <p className="text-[10px] text-slate-600 leading-relaxed max-w-2xl mx-auto italic">
-                {t('app.legal.ogl')}
-              </p>
-            </footer>
+              <div className="w-1 h-1 rounded-full bg-outline" />
+              <div className="cursor-pointer hover:text-primary transition-colors flex items-center gap-2">
+                <Settings size={16} /> Scriptorium
+              </div>
+            </div>
           </div>
         )}
 

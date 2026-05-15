@@ -32,7 +32,9 @@ pub fn run() {
             commands::characters::get_character,
             commands::characters::create_character,
             commands::spells::list_spells,
-            commands::ai::list_lore
+            commands::ai::list_lore,
+            commands::ai::list_source_files,
+            commands::ai::read_source_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

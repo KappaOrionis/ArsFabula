@@ -51,26 +51,22 @@ pub async fn check_ai_status() -> Result<AIStatus, String> {
 }
 #[command]
 pub async fn search_lore(query: String, filter_type: Option<String>) -> Result<Vec<LoreEntry>, String> {
-    let current_dir = std::env::current_dir().map_err(|e| e.to_string())?;
-    
-    // In dev mode, we are usually in the project root or src-tauri
-    // Let's try to find the python venv relative to the current dir
-    let mut python_path = current_dir.join("python").join("venv").join("Scripts").join("python.exe");
-    if !python_path.exists() {
-        // Try one level up if we are in src-tauri
-        python_path = current_dir.parent().unwrap().join("python").join("venv").join("Scripts").join("python.exe");
-    }
+    let root_dir = find_project_root().ok_or("Could not find project root directory")?;
 
-    let mut script_path = current_dir.join("python").join("api").join("query_lore.py");
-    if !script_path.exists() {
-        script_path = current_dir.parent().unwrap().join("python").join("api").join("query_lore.py");
-    }
+    let python_path = if cfg!(windows) {
+        root_dir.join("python").join("venv").join("Scripts").join("python.exe")
+    } else {
+        root_dir.join("python").join("venv").join("bin").join("python")
+    };
+
+    let script_path = root_dir.join("python").join("api").join("query_lore.py");
 
     if !python_path.exists() {
-        return Err(format!("Python venv not found at {:?}. Current dir: {:?}", python_path, current_dir));
+        return Err(format!("Python venv not found at {:?}", python_path));
     }
 
     let mut cmd = std::process::Command::new(python_path);
+    cmd.current_dir(&root_dir);
     cmd.arg(script_path).arg(&query);
 
     if let Some(f) = filter_type {
@@ -97,19 +93,18 @@ pub async fn search_lore(query: String, filter_type: Option<String>) -> Result<V
 
 #[command]
 pub async fn list_lore() -> Result<Vec<LoreEntry>, String> {
-    let current_dir = std::env::current_dir().map_err(|e| e.to_string())?;
-    
-    let mut python_path = current_dir.join("python").join("venv").join("Scripts").join("python.exe");
-    if !python_path.exists() {
-        python_path = current_dir.parent().unwrap().join("python").join("venv").join("Scripts").join("python.exe");
-    }
+    let root_dir = find_project_root().ok_or("Could not find project root directory")?;
 
-    let mut script_path = current_dir.join("python").join("api").join("list_lore.py");
-    if !script_path.exists() {
-        script_path = current_dir.parent().unwrap().join("python").join("api").join("list_lore.py");
-    }
+    let python_path = if cfg!(windows) {
+        root_dir.join("python").join("venv").join("Scripts").join("python.exe")
+    } else {
+        root_dir.join("python").join("venv").join("bin").join("python")
+    };
+
+    let script_path = root_dir.join("python").join("api").join("list_lore.py");
 
     let output = std::process::Command::new(python_path)
+        .current_dir(&root_dir)
         .arg(script_path)
         .output()
         .map_err(|e| format!("Failed to execute Python: {}", e))?;
@@ -121,4 +116,57 @@ pub async fn list_lore() -> Result<Vec<LoreEntry>, String> {
         })?;
 
     Ok(results)
+}
+
+fn find_project_root() -> Option<std::path::PathBuf> {
+    let mut current = std::env::current_dir().ok()?;
+    loop {
+        if current.join("data").exists() && current.join("config").exists() {
+            return Some(current);
+        }
+        if !current.pop() {
+            break;
+        }
+    }
+    None
+}
+
+#[command]
+pub async fn list_source_files() -> Result<Vec<String>, String> {
+    let root_dir = find_project_root().ok_or("Could not find project root directory (containing data/ and config/)")?;
+    let sources_dir = root_dir.join("data").join("sources").join("ars-magica-open-license").join("Ars-Magica-Open-License-main").join("reviewed");
+    
+    if !sources_dir.exists() {
+        return Err(format!("Sources directory not found at {:?}", sources_dir));
+    }
+
+    let mut files = Vec::new();
+    let entries = std::fs::read_dir(sources_dir).map_err(|e| e.to_string())?;
+    
+    for entry in entries {
+        if let Ok(entry) = entry {
+            let path = entry.path();
+            if path.is_file() && path.extension().map_or(false, |ext| ext == "md") {
+                if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
+                    files.push(name.to_string());
+                }
+            }
+        }
+    }
+    
+    files.sort();
+    Ok(files)
+}
+
+#[command]
+pub async fn read_source_file(filename: String) -> Result<String, String> {
+    let root_dir = find_project_root().ok_or("Could not find project root directory")?;
+
+    let file_path = root_dir.join("data").join("sources").join("ars-magica-open-license").join("Ars-Magica-Open-License-main").join("reviewed").join(filename);
+    
+    if !file_path.exists() {
+        return Err(format!("File not found: {:?}", file_path));
+    }
+
+    std::fs::read_to_string(file_path).map_err(|e| e.to_string())
 }

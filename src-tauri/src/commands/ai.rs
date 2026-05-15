@@ -94,3 +94,31 @@ pub async fn search_lore(query: String, filter_type: Option<String>) -> Result<V
 
     Ok(results)
 }
+
+#[command]
+pub async fn list_lore() -> Result<Vec<LoreEntry>, String> {
+    let current_dir = std::env::current_dir().map_err(|e| e.to_string())?;
+    
+    let mut python_path = current_dir.join("python").join("venv").join("Scripts").join("python.exe");
+    if !python_path.exists() {
+        python_path = current_dir.parent().unwrap().join("python").join("venv").join("Scripts").join("python.exe");
+    }
+
+    let mut script_path = current_dir.join("python").join("api").join("list_lore.py");
+    if !script_path.exists() {
+        script_path = current_dir.parent().unwrap().join("python").join("api").join("list_lore.py");
+    }
+
+    let output = std::process::Command::new(python_path)
+        .arg(script_path)
+        .output()
+        .map_err(|e| format!("Failed to execute Python: {}", e))?;
+
+    let results: Vec<LoreEntry> = serde_json::from_slice(&output.stdout)
+        .map_err(|e| {
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            format!("Failed to parse Python output: {}. Raw output: {}", e, stdout)
+        })?;
+
+    Ok(results)
+}

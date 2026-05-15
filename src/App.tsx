@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BrainStatus } from "./components/BrainStatus";
 import CodexView from "./components/Codex/CodexView";
-import CharacterList from "./components/Characters/CharacterList";
+import CovenantDashboard from "./components/Covenant/CovenantDashboard";
 import MapView from "./components/Map/MapView";
 import { LayoutDashboard, BookOpen, Users, Settings, Info, Map as MapIcon } from "lucide-react";
 import logo from "./assets/logo.png";
@@ -39,7 +39,7 @@ function App() {
             className={`sidebar-btn ${activeTab === 'characters' ? 'active' : ''}`}
           >
             <Users className="w-5 h-5" />
-            <span className="font-medium hidden md:block">Alliances</span>
+            <span className="font-medium hidden md:block">L'Alliance</span>
           </button>
 
           <button 
@@ -108,7 +108,7 @@ function App() {
                 <div className="space-y-2">
                   <h4 className="font-header text-primary text-xl">Le Sigillum</h4>
                   <p className="text-xs font-label uppercase tracking-widest text-text-muted opacity-60">Gestion d'Alliance</p>
-                  <p className="text-sm font-body">Suivez l'évolution de vos mages, de vos ressources de Vis et la croissance séculaire de votre Covenant.</p>
+                  <p className="text-sm font-body">Suivez l'évolution de vos mages, de vos ressources de Vis et la croissance séculaire de votre Alliance.</p>
                 </div>
                 <div className="space-y-2">
                   <h4 className="font-header text-primary text-xl">L'Atlas Mythique</h4>
@@ -181,7 +181,7 @@ function App() {
           </div>
         )}
 
-        {activeTab === 'characters' && <CharacterList />}
+        {activeTab === 'characters' && <CovenantDashboard />}
         {activeTab === 'codex' && <CodexView />}
         {activeTab === 'map' && <MapView />}
 

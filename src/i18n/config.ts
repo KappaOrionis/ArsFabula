@@ -28,7 +28,7 @@ i18n
           'app.legal.ogl': 'ArsFabula est une application indépendante utilisant le système de règles d\'Ars Magica 5ème Édition, sous licence Open Game License (OGL). Les contenus narratifs et le code source sont la propriété du projet.',
           'app.guide.title': 'Guide de Démarrage',
           'app.guide.step1.title': '1. Configurez votre Alliance',
-          'app.guide.step1.desc': 'Créez votre Covenant dans l\'onglet Personnages pour commencer à suivre vos ressources.',
+          'app.guide.step1.desc': 'Créez votre Alliance dans l\'onglet Alliance pour commencer à suivre vos ressources.',
           'app.guide.step2.title': '2. Explorez le Codex',
           'app.guide.step2.desc': 'Utilisez la recherche sémantique pour trouver des sorts ou des points de règles instantanément.',
           'app.guide.step3.title': '3. Connectez l\'IA',

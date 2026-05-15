@@ -12,6 +12,8 @@
   --danger: #ba1a1a;
   --outline: #8b716e;
   --outline-variant: #dec0bb;
+  --parchment-light: #fdfaf5;
+  --parchment: #f5f1e9;
   
   /* Typography */
   --font-header: 'EB Garamond', serif;
@@ -521,3 +523,18 @@ body {
   animation: pulse-gold 2s infinite;
 }
 
+
+.bg-parchment-light { background-color: var(--parchment-light); }
+.bg-parchment { background-color: var(--parchment); }
+.bg-bg-sidebar { background-color: var(--bg-sidebar); }
+
+.font-header { font-family: var(--font-header); }
+.font-body { font-family: var(--font-body); }
+.font-label { font-family: var(--font-label); }
+
+.rounded-3xl { border-radius: 1.5rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-xl { border-radius: 0.75rem; }
+
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }

@@ -34,7 +34,13 @@ pub fn run() {
             commands::spells::list_spells,
             commands::ai::list_lore,
             commands::ai::list_source_files,
-            commands::ai::read_source_file
+            commands::ai::read_source_file,
+            commands::covenant::list_covenants,
+            commands::covenant::get_covenant,
+            commands::covenant::create_covenant,
+            commands::covenant::get_current_season,
+            commands::covenant::advance_season,
+            commands::covenant::get_resources
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -56,3 +56,21 @@ pub struct Spell {
     pub description: Option<String>,
     pub openars_page: Option<String>,
 }
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct Season {
+    pub id: String,
+    pub covenant_id: String,
+    pub year: i32,
+    pub quarter: String,
+    pub event_summary: Option<String>,
+    pub is_current: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize, FromRow)]
+pub struct Resource {
+    pub id: String,
+    pub covenant_id: String,
+    pub resource_type: String,
+    pub amount: i32,
+    pub notes: Option<String>,
+}

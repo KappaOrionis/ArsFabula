@@ -7,24 +7,22 @@ const MapView: React.FC = () => {
 
   return (
     <div className="h-full w-full overflow-y-auto custom-scrollbar parchment-texture bg-background">
-      {/* Header Overlay */}
-      <div className="sticky top-0 z-50 p-8 pointer-events-none">
-        <div className="bg-surface-container/90 backdrop-blur-md p-8 rounded-3xl border border-outline-variant/30 shadow-2xl inline-block pointer-events-auto">
-          <div className="flex items-center gap-6">
-            <div className="w-16 h-16 rounded-2xl bg-primary-container/10 flex items-center justify-center">
+      <header className="sticky top-0 z-50 p-6 pointer-events-none mb-4">
+        <div className="bg-surface-container/90 backdrop-blur-md p-6 rounded-2xl border border-outline-variant/30 shadow-xl inline-block pointer-events-auto">
+          <div>
+            <h2 className="font-headline-lg text-on-surface flex items-center gap-4">
               <span className="material-symbols-outlined text-primary text-4xl">map</span>
-            </div>
-            <div>
-              <h2 className="font-headline-lg text-on-surface">
-                {t('map.title')}
-              </h2>
-              <p className="font-label-sm text-secondary tracking-[0.3em] uppercase mt-1">
-                {t('map.subtitle')} — AN 1220
-              </p>
-            </div>
+              {t('map.title')}
+            </h2>
+            <p className="font-label-sm text-secondary tracking-[0.2em] mt-1">
+              {t('map.subtitle')} — AN 1220
+            </p>
+            <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-primary/30 pl-4">
+              {t('map.purpose')}
+            </p>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Map Section */}
       <div className="relative w-full bg-[#0a0a08] shadow-inner overflow-hidden border-y border-outline-variant/30">

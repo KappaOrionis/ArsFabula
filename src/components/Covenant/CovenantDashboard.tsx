@@ -229,8 +229,8 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
                 <span className="material-symbols-outlined text-primary text-4xl">castle</span>
                 {t('covenant.list.title')}
               </h2>
-              <p className="font-label-sm text-secondary tracking-[0.2em] mt-1">
-                {t('covenant.list.subtitle')}
+              <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-primary/30 pl-4">
+                {t('covenant.list.purpose')}
               </p>
             </div>
           </div>
@@ -374,9 +374,21 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
                forceTab === 'grogs' ? t('dashboard.tile.grogs.title') :
                selectedCov?.name}
             </h1>
-            <p className="font-label-sm text-secondary tracking-[0.2em] mt-2">
-              Archives de l'Ordre d'Hermès — An {season?.year}
-            </p>
+            {forceTab === 'magi' && (
+              <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-primary/30 pl-4">
+                {t('character.magi.purpose')}
+              </p>
+            )}
+            {forceTab === 'companions' && (
+              <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-secondary/30 pl-4">
+                {t('character.companions.purpose')}
+              </p>
+            )}
+            {forceTab === 'grogs' && (
+              <p className="font-body-md text-on-surface-variant opacity-70 mt-4 max-w-2xl italic leading-relaxed border-l border-outline-variant/30 pl-4">
+                {t('character.grogs.purpose')}
+              </p>
+            )}
           </div>
 
         </div>

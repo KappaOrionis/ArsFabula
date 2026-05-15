@@ -10,7 +10,7 @@ type Tab = 'dashboard' | 'map' | 'covenants' | 'magi' | 'companions' | 'grogs' |
 function App() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen] = useState(true);
 
   return (
     <div className="flex h-screen bg-background text-on-surface overflow-hidden font-body-md parchment-texture">

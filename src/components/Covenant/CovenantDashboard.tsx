@@ -87,7 +87,7 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
 
   // Wizard State
   const [showWizard, setShowWizard] = useState(false);
-  const [wizardStep, setWizardStep] = useState(1);
+  // const [wizardStep, setWizardStep] = useState(1);
   const [wizardData, setWizardData] = useState({
     name: '',
     tribunal: 'Rhine',
@@ -141,6 +141,7 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
     return matchesSearch && matchesTribunal;
   });
 
+  /*
   const handleAdvanceSeason = async () => {
     if (!selectedCov) return;
     try {
@@ -163,6 +164,7 @@ const CovenantDashboard: React.FC<Props> = ({ forceTab }) => {
       }
     }
   };
+  */
 
   const getTypeIcon = (type: string) => {
     switch (type) {

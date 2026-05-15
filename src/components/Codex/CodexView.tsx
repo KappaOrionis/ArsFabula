@@ -20,7 +20,7 @@ const CodexView: React.FC = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<LoreEntry[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [sourceFiles, setSourceFiles] = useState<string[]>([]);
   const [selectedEditions, setSelectedEditions] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
